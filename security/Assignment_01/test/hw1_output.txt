@@ -1,0 +1,57 @@
+0x11 0x22 0x01 0x43 0x05 0x02 0x03 0x04 0x05 0x01
+Overview
+
+Pneumonia is an infection in one or both lungs. Bacteria, viruses, and fungi cause it.
+
+coughing that may produce phlegm (mucus)
+fever
+sweating or chills
+shortness of breath that happens while doing normal activities or even while resting
+chest pain that’s worse when you breathe or cough
+feelings of tiredness or fatigue
+loss of appetite
+nausea or vomiting
+headaches
+Other symptoms can vary according to your age and general health:
+
+Children under 5 years old may have fast breathing or wheezing.
+Infants may appear to have no symptoms, but sometimes they may vomit, lack energy, or have trouble drinking or eating.
+Older people may have milder symptoms. They can also exhibit confusion or a lower than normal body temperature.
+
+Causes of pneumonia
+There are several types of infectious agents that can cause pneumonia.
+
+Bacterial pneumonia
+The most common cause of bacterial pneumonia is Streptococcus pneumoniae. Other causes include:
+
+Mycoplasma pneumoniae
+Haemophilus influenzae
+Legionella pneumophila
+Viral pneumonia
+Respiratory viruses are often the cause of pneumonia. Some examples include:
+
+influenza (flu)
+respiratory syncytial virus (RSV)
+rhinoviruses (common cold)
+Viral pneumonia is usually milder and can improve in one to three weeks without treatment.
+
+Fungal pneumonia
+Fungi from soil or bird droppings can cause pneumonia. They most often cause pneumonia in people with weakened immune systems. Examples of fungi that can cause pneumonia include:
+
+Pneumocystis jirovecii
+Cryptococcus species
+Histoplasmosis species
+Types of pneumonia
+Pneumonia can also be classified according to where or how it was acquired.
+
+Hospital-acquired pneumonia (HAP)
+This type of bacterial pneumonia is acquired during a hospital stay. It can be more serious than other types, as the bacteria involved may be more resistant to antibiotics.
+
+Community-acquired pneumonia (CAP)
+Community-acquired pneumonia (CAP) refers to pneumonia that’s acquired outside of a medical or institutional setting.
+
+Ventilator-associated pneumonia (VAP)
+When people who are using a ventilator get pneumonia, it’s called VAP.
+
+Aspiration pneumonia
+Aspiration pneumonia happens when you inhale bacteria into your lungs from food, drink, or saliva. This type is more likely to occur if you have a swallowing problem or if you’re too sedate from the use of medications, alcohol, or other drugs.

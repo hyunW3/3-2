@@ -1,0 +1,65 @@
+SKKU is the top university in the world
+CBMsz223gfHe6AH6I + IIEjpXxjFlupBrGYZ8CDYYr9WJj4j0cMuL8uAA / Yxr9pNK
+CBMsz223gfHe6AH6I+IIEjpXxjFlupBrGYZ8CDYYr9WJj4j0cMuL8uAA/Yxr9pNK
+
+000099656c16f8e8 4f50d10a65055c3d coders
+0001245350b5eb0a 1548fc6d27d3b4d1 piewtf
+0001245350b5eb0a1548fc6d27d3b4d1
+
+iv : 0000000000000000000000000000000
+DES-ECB 
+
+1. with 000099656c16f8e8
+aTknE6McxUl8L4y0I10HhLJTv7aG+T3NDnqBlLxnteoI7d2giRoQjg==
+in hexa
+69392713a31cc5497c2f8cb4235d0784b253bfb686f93dcd0e7a8194bc67b5eabaaaebb3795fc1e5
+
+3. with coders
+7E6lK8wcPklugioSzYCYQvb7cNwgJhXe5Y4ZzMVhHDgY9BauGNZjkg==
+
+
+AES-128-CBC
+
+@ ECB 1 with 0001245350b5eb0a1548fc6d27d3b4d1
+PKWKaeWzMFq8FUzY8f9XyElJlNQGq3b10UykYQ0Y8DKNKxt9cN4fxNPs83J75PLesgf//CpLGyg0mAXt0JuUzw==
+
+
+@ ECB 1 with piewtf
+WK/N2KyIPDx+URejHOqlTWPyzuTt/WcEEYy4B5ATDhOIXpr7s3kZnZE7HtcCkJAweXEw+EhKKAc9/tkvyU6avQ==
+
+
+@ ECB 3 with 0001245350b5eb0a1548fc6d27d3b4d1
+DfctX4bDQhHIMKmQrguD+GJXlUP34CM+og8D1myVB2jELdunGvZwi3+/PXZBietVkWAaqFyIjuWRgb74XrICIA==
+
+@ ECB 3 with piewtf
+Vfnmp9RMF4E/3WJMhIhRta/aV8A8kkyXcSdRuUOMmR9K1+pU2XdqYbgBN5CFG9NNXz1w0he/WB2b7MNu7tS4qQ==
+
+=======================
+in backward
+CBMsz223gfHe6AH6I+IIEjpXxjFlupBrGYZ8CDYYr9WJj4j0cMuL8uAA/Yxr9pNK
+
+
+000099656c16f8e8 4f50d10a65055c3d coders
+0001245350b5eb0a 1548fc6d27d3b4d1 piewtf
+
+
+
+AES-128-CBC
+with 0001245350b5eb0a1548fc6d27d3b4d1
+
+DES-ECB (64)
+
+
+@Encode to Base64 format
+
+@des - ecb
+========== discard
+
+Haz)xz"(]
+BWy2UIflfy8+i70PMYc4+w==
+hN79r5MYc20W1Spw0+R6Qbt5627uW8GjsM19tW8fNmM= (앞에꺼)
+1BZ//3ZQxPMY7J5kMYY6PjqD9FN+APjyKOTugX6B/tc=
+
+U0tLVSBpcyB0aGUgdG9wIHVuaXZlcnNpdHkgaW4gdGhlIHdvcmxk
+U0tLVSBpcyB0aGUgdG9wIHVuaXZlcnNpdHkgaW4
+ia31VX3sN4cOKEgxaFqeioF/xz0ivJQnAZmxHIc89dK+72KyfpT85XezjG+qwCfH

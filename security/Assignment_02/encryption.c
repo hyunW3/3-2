@@ -71,7 +71,7 @@ int main(){
 
     srand(time(NULL));
     //idx1= rand() % 700;
-    idx1 = 4981;
+    idx1 = 104389;
     srand(time(NULL));
     idx2 = rand() % line_num;
     
@@ -89,7 +89,6 @@ int main(){
             DES_ecb_encrypt((DES_cblock *)(plain+i),(DES_cblock *)(des+i), &keysched, DES_ENCRYPT);
         }
         //base64_in = into_base64(des,iter);
-            //printf("des result:\n%s\n",base64_in);
         
         memset(iv, 0x00, AES_BLOCK_SIZE);
         memcpy(key2,ham[idx2].key,key_len);
@@ -106,7 +105,6 @@ int main(){
         fclose(out);
             //check whether ciphered plaintext vs ciphertext
  
-    fclose(out);
 exit:
 
     //after write the key 
@@ -114,8 +112,10 @@ exit:
     //free(key2);
 
 
-    free(base64_in);
+    //free(base64_in);
     free(ham);
+    free(plain);
+    free(cipher);
     return 0;
 }
 
@@ -132,7 +132,7 @@ void into_base64(uc* in, int len){
     BIO_flush(bio_64);
     BIO_get_mem_ptr(bio_64,&bio_ptr);
 
-    base64_in= calloc(bio_ptr->length,sizeof(uc));
+    //base64_in= calloc(bio_ptr->length,sizeof(uc));
     memcpy(base64_in, bio_ptr->data, bio_ptr->length-1);
     base64_in[bio_ptr->length-1] = 0;
     BIO_free_all(bio_64);

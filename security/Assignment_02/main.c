@@ -119,6 +119,8 @@ exit:
 
     free(base64_in);
     free(ham);
+    free(plain);
+    free(cipher);
     return 0;
 }
 
@@ -135,7 +137,7 @@ void into_base64(uc* in, int len){
     BIO_flush(bio_64);
     BIO_get_mem_ptr(bio_64,&bio_ptr);
 
-    base64_in = calloc(bio_ptr->length,sizeof(uc));
+    //base64_in = calloc(bio_ptr->length,sizeof(uc));
     memcpy(base64_in, bio_ptr->data, bio_ptr->length-1);
     base64_in[bio_ptr->length-1] = 0;
     BIO_free_all(bio_64);

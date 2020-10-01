@@ -71,7 +71,7 @@ int main(){
 
     srand(time(NULL));
     //idx1= rand() % 700;
-    idx1 = 104389;
+    idx1 = 14389;
     srand(time(NULL));
     idx2 = rand() % line_num;
     

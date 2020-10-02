@@ -140,8 +140,10 @@ void into_base64(uc* in, int len){
     BIO_get_mem_ptr(bio_64,&bio_ptr);
 
     BIO_set_close(bio_64, BIO_NOCLOSE);
-    BIO_free_all(bio_64);
     memcpy(base64_in, bio_ptr->data, bio_ptr->length);
+    base64_in[bio_ptr->length]='\0';
+    BIO_free_all(bio_64);
+    BUF_MEM_free(bio_ptr); // free code omitted
 
     return;
 }

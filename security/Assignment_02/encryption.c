@@ -77,8 +77,8 @@ int main(){
     idx1= rand() % 700;
     //idx1 = 0;
     srand(time(NULL));
-    idx2 = rand() % line_num;
-    //idx2 = 2;
+    //idx2 = rand() % line_num;
+    idx2 = 2;
     
     printf("==========idx : %d %d==========\n",idx1,idx2);
     printf("====password : %s,%s==========\n",ham[idx1].p,ham[idx2].p);
@@ -104,7 +104,8 @@ int main(){
         AES_cbc_encrypt(des,aes, strlen(des) , &enc_key_128, iv, AES_ENCRYPT);
         into_base64(aes,iter);
 
-        //printf("result:\n");
+        printf("result:\n");
+        printf("%s\n",base64_in);
         
 
         
@@ -185,6 +186,7 @@ void read_passwd(FILE* passwd_file){
     printf("line is %d\n",index);
 }
 //http://doctrina.org/Base64-With-OpenSSL-C-API.html
+//BUF_MEM struct should use BUF_MEM_free to free memory
 void into_base64(uc* in, int len){
     BIO *bio_mem, *bio_64;
     BUF_MEM *bio_ptr;
@@ -199,8 +201,10 @@ void into_base64(uc* in, int len){
     BIO_get_mem_ptr(bio_64,&bio_ptr);
 
     BIO_set_close(bio_64, BIO_NOCLOSE);
-    BIO_free_all(bio_64);
     memcpy(base64_in, bio_ptr->data, bio_ptr->length);
+    base64_in[bio_ptr->length]='\0';
+    BIO_free_all(bio_64);
+    BUF_MEM_free(bio_ptr); // free code omitted
 
     return;
 }

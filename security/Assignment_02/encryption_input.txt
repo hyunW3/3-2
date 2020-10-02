@@ -1,1 +1,1 @@
-SKKU is the top university in the world
+In the input file (\PlaintextCiphertext.txt"), UTF-8 and Base64 are used to encode the plaintext and the ciphertext, respectively (If you don't have any idea about encoding scheme, please visit the website:http://www.base64decode.org/).

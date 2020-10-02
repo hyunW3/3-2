@@ -13,6 +13,7 @@
 #define line_num 184389
 #define BUFSIZE 64
 #define key_len 16
+#define MAX_textlen 102401
 int file_size;
 typedef unsigned char uc;
 typedef struct p_ham{
@@ -31,17 +32,17 @@ int main(){
     // buffer for encrypt
     ham = calloc(line_num,sizeof(store));
     uc* plain,*cipher; //*des, *aes, ;
-    uc des[BUFSIZE], aes[BUFSIZE];
-    plain = calloc(BUFSIZE, sizeof(uc));
-    cipher = calloc(BUFSIZE+1, sizeof(uc));
+    uc des[MAX_textlen], aes[MAX_textlen];
+    plain = calloc(MAX_textlen, sizeof(uc));
+    cipher = calloc(MAX_textlen, sizeof(uc));
     //des = calloc(BUFSIZE, sizeof(uc));
     //aes = calloc(BUFSIZE, sizeof(uc));
-    base64_in = calloc(BUFSIZE, sizeof(uc));
+    base64_in = calloc(MAX_textlen, sizeof(uc));
 
     //read password file
     FILE *passwd_file;
     passwd_file = fopen("passwords.txt","r");
-    read_filesize(passwd_file);
+    //read_filesize(passwd_file);
     read_passwd(passwd_file);
     fclose(passwd_file);
 
@@ -58,7 +59,10 @@ int main(){
     idx1 = idx2 = 0;
     int iter = ((plain_len/16*16 == plain_len))?(plain_len):((plain_len/16+1)* 16);
     printf("iter : %d\n",iter);
-    if(plain_len < iter) memset(plain+plain_len,0x0,iter-plain_len);
+    if(plain_len < iter){
+        memset(plain+plain_len,0x0,iter-plain_len);
+        plain[iter] ='\0';
+    } 
     
     // elements for key setting
     //uc *key1,*key2;
@@ -70,10 +74,11 @@ int main(){
     //key2 = calloc(key_len,sizeof(uc)); // key for AES
 
     srand(time(NULL));
-    //idx1= rand() % 700;
-    idx1 = 14389;
+    idx1= rand() % 700;
+    //idx1 = 0;
     srand(time(NULL));
     idx2 = rand() % line_num;
+    //idx2 = 2;
     
     printf("==========idx : %d %d==========\n",idx1,idx2);
     printf("====password : %s,%s==========\n",ham[idx1].p,ham[idx2].p);
@@ -95,21 +100,32 @@ int main(){
 
         AES_set_encrypt_key(key2, 16*8, &enc_key_128);
         printf("%ld %ld\n",strlen(des),sizeof(des));
-        AES_cbc_encrypt(des,aes, sizeof(des) , &enc_key_128, iv, AES_ENCRYPT);
+        //AES_cbc_encrypt(des,aes, sizeof(des) , &enc_key_128, iv, AES_ENCRYPT);
+        AES_cbc_encrypt(des,aes, strlen(des) , &enc_key_128, iv, AES_ENCRYPT);
         into_base64(aes,iter);
 
-        printf("result:\n%s\n",base64_in);
+        //printf("result:\n");
+        
+
+        
         FILE* out = fopen("PlaintextCiphertext.txt","w");
         fprintf(out,"%s\n",plain);
         fprintf(out,"%s",base64_in);
+        int k=1;
+        /*
+        uc* ptr = base64_in;
+        while(64*k < strlen(base64_in)){
+            base64_in[64*k] ='\0';
+            printf("%s",ptr);
+            //fprintf(out,"%s",ptr);
+            ptr = base64_in+64*k+1;
+        }
+        */
         fclose(out);
             //check whether ciphered plaintext vs ciphertext
  
 exit:
 
-    //after write the key 
-    //free(key1);
-    //free(key2);
 
 
     //free(base64_in);
@@ -120,27 +136,8 @@ exit:
 }
 
 // need to receive whole text
-void into_base64(uc* in, int len){
-    BIO *bio_mem, *bio_64;
-    BUF_MEM *bio_ptr;
-
-    bio_64 = BIO_new(BIO_f_base64());
-    bio_mem = BIO_new(BIO_s_mem());
-    bio_64 = BIO_push(bio_64, bio_mem);
-
-    BIO_write(bio_64,in,len);
-    BIO_flush(bio_64);
-    BIO_get_mem_ptr(bio_64,&bio_ptr);
-
-    //base64_in= calloc(bio_ptr->length,sizeof(uc));
-    memcpy(base64_in, bio_ptr->data, bio_ptr->length-1);
-    base64_in[bio_ptr->length-1] = 0;
-    BIO_free_all(bio_64);
-
-    return;
-}
 void read_text(FILE* f,uc* plain,uc* cipher){
-    fgets(plain,BUFSIZE,f);
+    fgets(plain,MAX_textlen,f);
     printf("plain :%s",plain);
 }
 void read_filesize(FILE* f){
@@ -182,18 +179,28 @@ void read_passwd(FILE* passwd_file){
         }
 
         memcpy(ham[index].key,key,key_len);
-    /*
-        if(index<3) {
-            for(int j=0; j<key_len; ++j){
-                printf("%02x ",ham[index].key[j]);
-            }
-            printf("\n");
-            printf("%s\n",ham[index].p);
-        }
-        //if(index >=1) break;
-    */
         index++;
         // line 29131 -> bufsize should be longer than 65
     }
     printf("line is %d\n",index);
+}
+//http://doctrina.org/Base64-With-OpenSSL-C-API.html
+void into_base64(uc* in, int len){
+    BIO *bio_mem, *bio_64;
+    BUF_MEM *bio_ptr;
+
+    bio_64 = BIO_new(BIO_f_base64());
+    bio_mem = BIO_new(BIO_s_mem());
+    bio_64 = BIO_push(bio_64, bio_mem);
+
+    BIO_set_flags(bio_64,BIO_FLAGS_BASE64_NO_NL);
+    BIO_write(bio_64,in,len);
+    BIO_flush(bio_64);
+    BIO_get_mem_ptr(bio_64,&bio_ptr);
+
+    BIO_set_close(bio_64, BIO_NOCLOSE);
+    BIO_free_all(bio_64);
+    memcpy(base64_in, bio_ptr->data, bio_ptr->length);
+
+    return;
 }

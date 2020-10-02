@@ -1,0 +1,2 @@
+In the input file (\PlaintextCiphertext.txt"), UTF-8 and Base64 are used to encode the plaintext and the ciphertext, respectively (If you don't have any idea about encoding scheme, please visit the website:http://www.base64decode.org/)
+iiDdG6j0qKH7EwKqpj3oPvoK7kQMWxsfetr/qGM4sgpFgp6/pkMDtEmth6ayuuy+Tb1OKjy+EwfvNY+eZiFHOJsKaWRi6FFXfPVO3UBYZ/uPVJduALW3w8/jofKEeTrWCryVAuWNeQA4pZyNbEYKgBCEanmJ7oFNwhKZwOg6WgOCa5BbiXIA3mTHo3q6wT8AgRJP1Aceoiz2UYA4RlGT9UKroLIJ0Fo2b/P192bOznHCEtVJfpRNunkcr35JQpTxfSBrnt+u57haymMp1OPHQsofq74zGKi43ZoF8aqJnOyf7RhYwGjDfrY0QSRVuVWV

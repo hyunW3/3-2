@@ -40,10 +40,7 @@ class machine (threading.Thread):
 		self.dst = dst
 	def run(self):
 		#print("Thread{0} starts at ".format(self.thread_ID) + str(start_time))
-		#optional
-		#log_file.write("Thread " + str(self.thread_ID) + " started\n")
 
-		#log_file.write(str(start_time)+" Start copying "+self.src + " to " + self.dst+"\n")
 		#os.fsync(log_file)
 		copy(self.src,self.dst)
 		q.put(self.thread_ID)
@@ -60,6 +57,7 @@ def main():
 		if src == "exit":
 			for m in thread:
 				m.join()
+				# 쓰레드 exit된거는 join하면 된다
 			return 0;
 		elif(os.path.isfile("./"+src)):
 			dst = input("Input the new name: ")

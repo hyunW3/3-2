@@ -103,23 +103,23 @@ exit:
 
 
 void into_base64(uc* in, int len){
-    BIO *bio_mem, *bio_64;
-    BUF_MEM *bio_ptr;
+    BIO *mem, *v_64;
+    BUF_MEM *ptr;
 
-    bio_64 = BIO_new(BIO_f_base64());
-    bio_mem = BIO_new(BIO_s_mem());
-    bio_64 = BIO_push(bio_64, bio_mem);
+    v_64 = BIO_new(BIO_f_base64());
+    mem = BIO_new(BIO_s_mem());
+    v_64 = BIO_push(v_64, mem);
 
-    BIO_set_flags(bio_64,BIO_FLAGS_BASE64_NO_NL);
-    BIO_write(bio_64,in,len);
-    BIO_flush(bio_64);
-    BIO_get_mem_ptr(bio_64,&bio_ptr);
+    BIO_set_flags(v_64,BIO_FLAGS_BASE64_NO_NL);
+    BIO_write(v_64,in,len);
+    BIO_flush(v_64);
+    BIO_get_mem_ptr(v_64,&ptr);
 
-    BIO_set_close(bio_64, BIO_NOCLOSE);
-    memcpy(base64_in, bio_ptr->data, bio_ptr->length);
-    base64_in[bio_ptr->length]='\0';
-    BIO_free_all(bio_64);
-    BUF_MEM_free(bio_ptr); // free code needed
+    BIO_set_close(v_64, BIO_NOCLOSE);
+    memcpy(base64_in, ptr->data, ptr->length);
+    base64_in[ptr->length]='\0';
+    BIO_free_all(v_64);
+    BUF_MEM_free(ptr); // free code needed
 
     return;
 }

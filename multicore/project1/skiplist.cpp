@@ -70,7 +70,6 @@ int main(int argc, char* argv[])
 
     // print results
     cout << "Elapsed time: " << (stop.tv_sec - start.tv_sec) + ((double) (stop.tv_nsec - start.tv_nsec))/BILLION << " sec" << endl;
-
     // clean up and return
     return (EXIT_SUCCESS);
 

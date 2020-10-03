@@ -42,6 +42,7 @@ class machine (threading.Thread):
 		self.src = src
 		self.dst = dst
 	def run(self):
+		
 		copy(self.src,self.dst)
 		q.put(self.thread_ID)
 		t.sleep(0)

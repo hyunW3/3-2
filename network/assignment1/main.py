@@ -62,6 +62,7 @@ def main():
 			return 0;
 		elif(os.path.isfile("./"+src)):
 			dst = input("Input the new name: ")
+			print()
 			m = machine(q.get(),src,dst)
 			m.setDaemon(True)
 			m.start()

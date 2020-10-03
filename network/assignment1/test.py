@@ -28,6 +28,8 @@ def copy(src, dst):
 		data = f.read(10000)
 		new_f.write(data)
 		i += 10000
+		if i%1000000 == 0:
+			t.sleep(1)
 	f.close()
 	new_f.close()
 	end_time = get_logtime()

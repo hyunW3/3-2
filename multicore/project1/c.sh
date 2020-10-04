@@ -1,6 +1,7 @@
 #!/bin/sh
 
 name=$1
-exe=${name%%'.c'}
+exe=${name%%'.cpp'}
+echo ${exe}
 g++ ${name} -o ${exe}.exe -lpthread
-./${exe}.exe
+./${exe}.exe input.txt 4

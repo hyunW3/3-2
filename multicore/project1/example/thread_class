@@ -1,0 +1,18 @@
+class C
+{
+public:
+    void *hello(void)
+    {
+        std::cout << "Hello, world!" << std::endl;
+        return 0;
+    }
+
+    static void *hello_helper(void *context)
+    {
+        return ((C *)context)->hello();
+    }
+};
+...
+C c;
+pthread_t t;
+pthread_create(&t, NULL, &C::hello_helper, &c);

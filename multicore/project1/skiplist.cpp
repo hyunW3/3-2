@@ -26,6 +26,7 @@ long odd = 0;
 long min = INT_MAX;
 long max = INT_MIN;
 bool done = false;
+bool start = false;
 FILE* fin;
 skiplist<int, int> list(0,1000000);
 queue<pair<char,int>> task_q;
@@ -37,7 +38,7 @@ void* workerThread(void* unused);
 pthread_mutex_t q_lock = PTHREAD_MUTEX_INITIALIZER;
 int r_thread =0; // current running pthread
 ui num_thread; // given by a command line parameter
-pthread_cond_t start;
+pthread_cond_t wakeup;
 pthread_rwlock_t rw_lock;
 
 int main(int argc, char* argv[])
@@ -78,14 +79,23 @@ void* workerThread(void* unused){
         char action;
         long num;
         pthread_mutex_lock(&q_lock);
-        while(task_q.empty()== true && !done) {
-            pthread_cond_wait(&start,&q_lock);
+        //printf("%lu : empty? : %d, start? : %d\n",pthread_self(),task_q.empty(),start);
+        while(!start) {
+            pthread_cond_wait(&wakeup,&q_lock);
+        }
+        //printf("%lu : empty? : %d, start? : %d\n",pthread_self(),task_q.empty(),start);
+        
+        if(task_q.empty() == true) {
+        pthread_mutex_unlock(&q_lock);
+            continue;
         }
         action = task_q.front().first; 
         num = task_q.front().second;
         task_q.pop();
+        cout << "self pid:" << pthread_self() << "\n";
+        if(action != 'p') printf("%c %ld\n",action,num);
+        else printf("%c (print)\n",action);
         pthread_mutex_unlock(&q_lock);
-        printf("%c %ld\n",action,num);
         if (action == 'i') {            // insert
             list.insert(num,num);
             // update aggregate variables
@@ -98,7 +108,11 @@ void* workerThread(void* unused){
             else cout << "SUCCESS: Found: " << num << "\n";
         } else if (action == 'w') {     // wait
             printf("sleep....\n");
-            usleep(num);
+            //usleep(num);
+            struct timeval u_time;
+            u_time.tv_sec = num/1000;
+            u_time.tv_usec = num;
+            select(0,0,0,0,&u_time);
         } else if (action == 'p') {     // wait
 	        cout << list.printList() << "\n";
         } else {
@@ -106,10 +120,10 @@ void* workerThread(void* unused){
                 printf("ERROR: Unrecognized action: '%c'\n", action);
                 //sleep(1);
                 //exit(EXIT_FAILURE);
-            }else sleep(0); // context switch
+            } //else sleep(0); // context switch
         }
     }
-    printf("Thread ends\n");
+    printf("Thread ends %lu \n",pthread_self());
     pthread_exit(0);
     // one thread is not exiting
 }
@@ -121,6 +135,7 @@ void* MainThread(void* unused){
     
     for(ui i=0; i<num_thread; ++i){
         errno = pthread_create(&workers[i],NULL,workerThread,NULL);
+        printf("pthread_id[%d] : %lu\n",i,workers[i]);
         if(errno <0){
             perror("pthread_create() fail");
             return (void*)EXIT_FAILURE;
@@ -131,10 +146,13 @@ void* MainThread(void* unused){
     char action;
     long num;
     while (fscanf(fin, "%c %ld\n", &action, &num) > 0) {
-        printf("%c %ld inserted in queue\n",action,num);
         pthread_mutex_lock(&q_lock);
+        printf("%c %ld inserted in queue\n",action,num);
+        start = true;
         task_q.push(make_pair(action,num));
-        if(task_q.size()==1) pthread_cond_broadcast(&start);
+        if(task_q.size()==1) {
+            pthread_cond_broadcast(&wakeup);
+        }
         pthread_mutex_unlock(&q_lock);
     }
     fclose(fin);
@@ -144,12 +162,15 @@ void* MainThread(void* unused){
         cout << "queue size : " << task_q.size() <<"\n";
         sleep(10);
     }
-    printf("2-hi\n");
     done =true;
-
+    printf("2-hi\n");
+    pthread_cond_broadcast(&wakeup);
     // when task is end (queue is empty)
     for(ui i=0; i<num_thread; ++i){
-        printf("3-hi %d\n",i);
+        pthread_mutex_trylock(&q_lock);
+        cout << "thread id:" << workers[i] << "\n";
+        printf("3-hi %d \n",i);
+        pthread_mutex_unlock(&q_lock);
         errno = pthread_join(workers[i],NULL);
         if(errno != 0){
             perror("thread_join fail");

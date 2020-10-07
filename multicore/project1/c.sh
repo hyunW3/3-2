@@ -4,4 +4,4 @@ name=$1
 exe=${name%%'.cpp'}
 echo ${exe}
 g++ ${name} -o ${exe}.exe -lpthread
-./${exe}.exe ./input/input3.txt 8
+./${exe}.exe ./input/input4.txt 8

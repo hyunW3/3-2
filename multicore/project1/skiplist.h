@@ -113,6 +113,7 @@ public:
     {
         skiplist_node<K,V,MAXLEVEL>* update[MAXLEVEL];
         NodeType* currNode = m_pHeader;
+        pthread_rwlock_wrlock(&w);
         for(int level=max_curr_level; level >=1; level--) {
             while ( currNode->forwards[level]->key[0] <= searchKey ) {
                 currNode = currNode->forwards[level];
@@ -121,7 +122,6 @@ public:
         }
 
         //currNode = currNode->forwards[1];
-
 	if( currNode->cnt < NPAIRS){
 	    //  insert
 	    currNode->insert(searchKey, newValue);
@@ -138,7 +138,6 @@ public:
        	    //currNode = new NodeType(searchKey,newValue);
 	    NodeType* newNode = new NodeType();
 	    int mid=currNode->cnt/2; 
-        pthread_rwlock_wrlock(&w);
 	    for (int i=mid; i<currNode->cnt; i++){
 	        newNode->insert(currNode->key[i], currNode->value[i]);
 	    }
@@ -153,8 +152,8 @@ public:
 		newNode->forwards[lv] = update[lv]->forwards[lv];
 		update[lv]->forwards[lv] = newNode; // make previous node point to new node
 	    }
-        pthread_rwlock_unlock(&w);
 	}
+        pthread_rwlock_unlock(&w);
     }
  
     void erase(K searchKey)

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sstream>
+#include <pthread.h>
+pthread_rwlock_t w= PTHREAD_RWLOCK_INITIALIZER; 
 
 #define BILLION  1000000000L
 #define NPAIRS  44
@@ -91,6 +93,7 @@ public:
         for ( int i=1; i<=MAXLEVEL; i++ ) {
             m_pHeader->forwards[i] = m_pTail;
         }
+        pthread_rwlock_init(&w,NULL);
     }
  
     virtual ~skiplist()
@@ -103,6 +106,7 @@ public:
         }
         delete m_pHeader;
         delete m_pTail;
+        pthread_rwlock_destroy(&w);
     }
  
     void insert(K searchKey,V newValue)
@@ -134,6 +138,7 @@ public:
        	    //currNode = new NodeType(searchKey,newValue);
 	    NodeType* newNode = new NodeType();
 	    int mid=currNode->cnt/2; 
+        pthread_rwlock_wrlock(&w);
 	    for (int i=mid; i<currNode->cnt; i++){
 	        newNode->insert(currNode->key[i], currNode->value[i]);
 	    }
@@ -144,11 +149,11 @@ public:
 	    else{
 	        currNode->insert(searchKey, newValue);
 	    }
-
 	    for ( int lv=1; lv<=max_curr_level; lv++ ) {
 		newNode->forwards[lv] = update[lv]->forwards[lv];
 		update[lv]->forwards[lv] = newNode; // make previous node point to new node
 	    }
+        pthread_rwlock_unlock(&w);
 	}
     }
  

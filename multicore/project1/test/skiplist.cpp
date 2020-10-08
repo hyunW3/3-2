@@ -158,7 +158,7 @@ void* workerThread(void* unused){
         //r_thread--;
         pthread_mutex_unlock(&q_lock);
     }
-    printf("Thread ends %lu \n",pthread_self());
+    //printf("Thread ends %lu \n",pthread_self());
     pthread_exit(0);
     // one thread is not exiting
 }
@@ -170,7 +170,7 @@ void* MainThread(void* unused){
     
     for(ui i=0; i<num_thread; ++i){
         errno = pthread_create(&workers[i],NULL,workerThread,NULL);
-        printf("pthread_id[%d] : %lu\n",i,workers[i]);
+        //printf("pthread_id[%d] : %lu\n",i,workers[i]);
         if(errno <0){
             perror("pthread_create() fail");
             return (void*)EXIT_FAILURE;
@@ -188,9 +188,9 @@ void* MainThread(void* unused){
         task_q.push(make_pair(action,num));
         if(action == 'p'){
             //pthread_cond_wait(&stop_all,&q_lock);
-            printf("stop all called ");
+            //printf("stop all called ");
             iter = task_q.size();
-            printf("iter : %u\n",iter);
+            //printf("iter : %u\n",iter);
             stop_all = true;
         }
         if(task_q.size()==1) {

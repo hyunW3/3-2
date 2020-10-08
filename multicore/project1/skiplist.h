@@ -1,10 +1,9 @@
 #include <iostream>
 #include <sstream>
-#include <pthread.h>
-pthread_rwlock_t w= PTHREAD_RWLOCK_INITIALIZER; 
 
 #define BILLION  1000000000L
 #define NPAIRS  44
+pthread_rwlock_t rw1 = PTHREAD_RWLOCK_INITIALIZER;
 
 using namespace std;
  
@@ -93,7 +92,6 @@ public:
         for ( int i=1; i<=MAXLEVEL; i++ ) {
             m_pHeader->forwards[i] = m_pTail;
         }
-        pthread_rwlock_init(&w,NULL);
     }
  
     virtual ~skiplist()
@@ -106,14 +104,14 @@ public:
         }
         delete m_pHeader;
         delete m_pTail;
-        pthread_rwlock_destroy(&w);
+        pthread_rwlock_destroy(&rw1);
     }
  
     void insert(K searchKey,V newValue)
     {
         skiplist_node<K,V,MAXLEVEL>* update[MAXLEVEL];
         NodeType* currNode = m_pHeader;
-        pthread_rwlock_wrlock(&w);
+       pthread_rwlock_wrlock(&rw1);
         for(int level=max_curr_level; level >=1; level--) {
             while ( currNode->forwards[level]->key[0] <= searchKey ) {
                 currNode = currNode->forwards[level];
@@ -122,6 +120,7 @@ public:
         }
 
         //currNode = currNode->forwards[1];
+
 	if( currNode->cnt < NPAIRS){
 	    //  insert
 	    currNode->insert(searchKey, newValue);
@@ -148,12 +147,13 @@ public:
 	    else{
 	        currNode->insert(searchKey, newValue);
 	    }
+
 	    for ( int lv=1; lv<=max_curr_level; lv++ ) {
 		newNode->forwards[lv] = update[lv]->forwards[lv];
 		update[lv]->forwards[lv] = newNode; // make previous node point to new node
 	    }
 	}
-        pthread_rwlock_unlock(&w);
+        pthread_rwlock_unlock(&rw1);
     }
  
     void erase(K searchKey)

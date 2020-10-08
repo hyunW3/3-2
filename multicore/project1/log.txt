@@ -30,7 +30,27 @@ Elapsed time: 1.00405 sec   Elapsed time: 1.0057 sec
 Elapsed time: 1.00659 sec   Elapsed time: 1.00682 sec
 Elapsed time: 1.08575 sec   Elapsed time: 1.0877 sec
 
+within test directory 1008 13:35
+Elapsed time: 402.857 sec   Elapsed time: 361.331 sec - compare to sequential Elapsed time: 164.122 sec
+Elapsed time: 0.0465531 sec
+Elapsed time: 1.41861 sec
+Elapsed time: 2.97587 sec   Elapsed time: 3.03065 sec
 
+1009 01:35 main.cpp vs sequential
+input1 : parallel   :  Elapsed time:200.557 sec    Elapsed time: 202.347 sec          
+          sequential :  Elapsed time: 152.566 sec   Elapsed time: 156.119 sec
+input2  Elapsed time: 0.00802535 sec    Elapsed time: 0.00969526 sec
+        Elapsed time: 0.0169077 sec     Elapsed time: 0.01694 sec
+input3  Elapsed time: 0.135491 sec      Elapsed time: 0.135648 sec
+        Elapsed time: 1.06699 sec       Elapsed time: 1.06863 sec
+input4  Elapsed time: 0.303713 sec      Elapsed time: 0.288174 sec
+        Elapsed time: 1.6422 sec        Elapsed time: 1.65376 sec
+input_0 Elapsed time: 0.0586897 sec     Elapsed time: 0.0577573 sec
+        Elapsed time: 0.0942518 sec     Elapsed time: 0.0941424 sec
+input_1 Elapsed time: 0.0522392 sec     Elapsed time: 0.0529957 sec
+        Elapsed time: 0.092782 sec      Elapsed time: 0.0930668 sec
+input_2 Elapsed time: 1.14594 sec       Elapsed time: 1.12424 sec
+        Elapsed time: 1.58721 sec       Elapsed time: 1.58081 sec
 
 ################
 compare

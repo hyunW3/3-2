@@ -40,7 +40,6 @@ int r_thread =0; // current running pthread
 ui num_thread; // given by a command line parameter
 pthread_cond_t wakeup;
 pthread_rwlock_t rw_lock;
-
 int main(int argc, char* argv[])
 {
     struct timespec start, stop;

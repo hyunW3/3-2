@@ -1,14 +1,11 @@
-1005, thread#: 8
-with all printf
+compare
+278/1.3/62/25.5~7 sec for input1~4
+1008, thread#: 8
+
 @@@@input1.txt 
-Elapsed time: 245.475 sec
 @@@@input2.txt 
-16.2218sec / 
-in server : Elapsed time: 10.1199 sec
 @@@@input3.txt 
-in server : 10.3287 sec
 @@@@input4.txt 
-Elapsed time: 16.6552 sec
 
 1007, thread# 8, with rwlock in skiplist.h 
 below line 140
@@ -41,3 +38,9 @@ compare
  insert, query할때
  list에 락 안걸어도 됨? 
  3번이 write만 존나 많은거라 할때마다 락걸려서 느려야 정상임
+
+##
+input2.5_p.txt
+(0,335,362,383,386,421,492,649,777,793,886,915,)
+
+-> no blocking in print (p)

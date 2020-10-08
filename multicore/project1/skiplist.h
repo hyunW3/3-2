@@ -92,6 +92,7 @@ public:
         for ( int i=1; i<=MAXLEVEL; i++ ) {
             m_pHeader->forwards[i] = m_pTail;
         }
+        pthread_rwlock_init(&rw1,NULL);
     }
  
     virtual ~skiplist()
@@ -188,6 +189,7 @@ public:
     V find(K searchKey)
     {
         NodeType* currNode = m_pHeader;
+        //pthread_rwlock_rdlock(&rw1);
         for(int level=max_curr_level; level >=1; level--) {
             while ( currNode->forwards[level]->key[0] <= searchKey ) {
                 currNode = currNode->forwards[level];
@@ -200,6 +202,7 @@ public:
                 return currNode->value[i];
             }
 	}
+        //pthread_rwlock_unlock(&rw1);
 
         //return NULL;
         return -1;

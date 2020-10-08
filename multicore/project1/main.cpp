@@ -61,33 +61,36 @@ void* workerThread(void* unused){
         }
         action = task_q.front().first; 
         num = task_q.front().second;
+            pthread_rwlock_wrlock(&rw);
+            r_thread++;
+            pthread_rwlock_unlock(&rw);
 
         task_q.pop();
-        r_thread++;
         if(action == 'p')   stop_all = true;
         //if(action != 'p') printf("(%d)%c %ld\n",r_thread,action,num);
-       // else printf("(%d)%c (print)\n",r_thread,action);
+        //else printf("(%d)%c (print)\n",r_thread,action);
         pthread_mutex_unlock(&q_lock);
+
         if (action == 'i') {            // insert
         
-            pthread_rwlock_wrlock(&rw);
+            //pthread_rwlock_wrlock(&rw);
             list.insert(num,num);
-            pthread_rwlock_unlock(&rw);
+            //pthread_rwlock_unlock(&rw);
             // update aggregate variables
             sum += num;
             if (num % 2 == 1) {
                 odd++;
             }
         }else if (action == 'q') {      // qeury
-            pthread_rwlock_rdlock(&rw);
+            //pthread_rwlock_rdlock(&rw);
             if(list.find(num)!=num) printf("ERROR: Not Found: %lu\n",num);
-            pthread_rwlock_unlock(&rw);
+            //pthread_rwlock_unlock(&rw);
             //else cout << "SUCCESS: Found: " << num << "\n";
         } else if (action == 'w') {     // wait
             //printf("sleep....\n");
-            pthread_rwlock_rdlock(&rw);
+            //pthread_rwlock_rdlock(&rw);
             usleep(num);
-            pthread_rwlock_unlock(&rw);
+            //pthread_rwlock_unlock(&rw);
         } else if (action == 'p') {     // wait
             while(r_thread >1) {
                 //printf("%d\n",r_thread);

@@ -50,7 +50,12 @@ input_0 Elapsed time: 0.0586897 sec     Elapsed time: 0.0577573 sec
 input_1 Elapsed time: 0.0522392 sec     Elapsed time: 0.0529957 sec
         Elapsed time: 0.092782 sec      Elapsed time: 0.0930668 sec
 input_2 Elapsed time: 1.14594 sec       Elapsed time: 1.12424 sec
-        Elapsed time: 1.58721 sec       Elapsed time: 1.58081 sec
+        Elapsed time: 1.58721 sec       Elapsed time: 1.58081 sec  -> lost
+input_2(new)    Elapsed time: 1.61297 sec       Elapsed time: 1.61322 sec
+                Elapsed time: 12.0472 sec       Elapsed time: 12.0467 sec
+input_3 Elapsed time: 21.8462 sec       Elapsed time: 21.8263 sec
+        Elapsed time: 168.563 sec       Elapsed time: 168.597 sec
+
 
 ################
 compare

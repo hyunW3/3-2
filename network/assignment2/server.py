@@ -52,7 +52,6 @@ def serv_work(client_socket, addr):
                 response_data = response_404 #+ "Date: {2}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
                 print(response_data)
                 client_socket.sendall(response_data.encode())
-                
     else: # request is not GET
         response_data = "{0} 405 Method Not Allowed\nServer: {1}\nDate: {2}\n".format(request_version, server_name, 
         datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))

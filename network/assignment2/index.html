@@ -7,19 +7,24 @@
 
     </head>
     <body> hello this is main page
-        <form action="./secret.html" method="post" enctype="text/html">
+        <form action="./secret.html" method="post" enctype="text/plain" >
+        <!--- 
+            enctype="multipart/form-data">
+        --->
         <div>
             <label for="ID">Type your ID</label>
-            <input type="text" id="ID" />
+            <input type="text" name="ID" />
         </div>
         <div>
             <label for="password">Password</label>
-            <input type="password" id="password">
+            <input type="password"  name="password">
         </div>
         <div>
-            <button type="submit" id = "login">Log In</button>
+            <button type="submit" > Log In </button>
         </div>
         </form>
-        <img src="./1.jpg" width="400" height="300"/>
+        <!--  --->
+            <img src="./index/1.jpg" width="400" height="300"/>
+            
     </body>
 </html>

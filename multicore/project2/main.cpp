@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <utility>
+#include <omp.h>
 
 #define BILLION  1000000000L
 int arr_len;
@@ -24,13 +25,6 @@ void msd(vec &a, int lo, int hi, int d){
 			count[0]++;
 		}
 	}
-/*
-	for(int k=1; k<256; ++k){
-		printf("%d ",count[k]);
-		if(k == 89) printf("\n");
-	}
-	printf("\n");
-*/
 	for(int k=1; k<256; ++k){
 		count[k] += count[k-1];
 		pos[k] = count[k];
@@ -47,11 +41,19 @@ void msd(vec &a, int lo, int hi, int d){
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);
+	#pragma omp prallel shared(lo,hi)
+	{
+	#pragma omp for
 	for(int i=0; i<hi-lo; ++i){
 		a[i+lo] = temp[i];
 	}
+	
+	#pragma omp for
 	for(int i=1; i<255; ++i){
-		msd(a,lo+pos[i],lo+pos[i+1],d+1);
+		if( lo+pos[i+1] > lo+pos[i] + 1) {
+			msd(a,lo+pos[i],lo+pos[i+1],d+1);
+		}
+	}
 	}
 	
 }
@@ -70,8 +72,10 @@ int main(int argc, char* argv[]){
     arr_len = atoi(argv[2]);
 	int start_show = atoi(argv[3]);
 	int end_show = atoi(argv[4]);
+	int num_thread = atoi(argv[4]);
     //printf("%s %d\n",argv[1],arr_len);
-
+	omp_set_num_threads(num_thread);
+	
 	for(int i=0; i<arr_len; ++i){
 		//inputfile.getline(array[i],20);
 		std::string tmp;

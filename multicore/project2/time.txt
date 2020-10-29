@@ -1,0 +1,8 @@
+159077c159077
+< Elapsed time: 0.101727 sec
+---
+> Elapsed time: 0.0606288 sec
+10003c10003
+< Elapsed time: 0.0259284 sec
+---
+> Elapsed time: 0.0310473 sec

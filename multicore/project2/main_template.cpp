@@ -10,68 +10,53 @@
 
 #define BILLION  1000000000L
 int arr_len;
+
 typedef std::vector<std::string> vec;
 vec array;
 void msd(vec &a, int lo, int hi, int d){
 	std::string temp[hi-lo+1];
 	int count[256] = {0,};
 	int pos[256]={0,};
-	int tmp;
-	int zeros =0;
 	if(hi <= lo + 1) return;
-
-	#pragma omp parallel private(tmp) shared(zeros)//shared(a,lo,hi)
-	{
-	//#pragma omp for 
-	#pragma omp single
 	for(int i=lo; i<hi; ++i){
-		if(a[i].length() > d){
-			//#pragma omp atomic
-			count[a[i].at(d) + 1]++;
-		} else {
-			//#pragma omp atomic
+		try{
+			count[int(a[i].at(d)) + 1]++;
+		}catch (std::out_of_range& oor) {
 			count[0]++;
 		}
 	}
-	#pragma omp single
+/*
+	for(int k=1; k<256; ++k){
+		printf("%d ",count[k]);
+		if(k == 89) printf("\n");
+	}
+	printf("\n");
+*/
 	for(int k=1; k<256; ++k){
 		count[k] += count[k-1];
-	}
-	#pragma omp for
-	for(int k=1; k<256; ++k){
 		pos[k] = count[k];
 	}
 	//printf("\n");
-	//#pragma omp single 
-	#pragma omp for
+	int zeros =0;
 	for(int i=lo; i<hi; ++i){
-		if(a[i].length() > d){
-			tmp = a[i].at(d);
-			temp[count[tmp]] = a[i];
-			count[tmp]++;
-			//temp[count[a[i].at(d)]] = a[i];
-			//count[a[i].at(d)]++;
-		} else {
-			#pragma omp critical
-			{
-				temp[zeros] = a[i];
-				zeros++;
-
-			}
+		try{
+			temp[count[a[i].at(d)]] = a[i];
+			count[a[i].at(d)]++;
+		}catch (std::out_of_range& oor) {
+			temp[zeros] = a[i];
+			zeros++;
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);
-	#pragma omp for
 	for(int i=0; i<hi-lo; ++i){
 		a[i+lo] = temp[i];
 	}
-	#pragma omp for
 	for(int i=1; i<255; ++i){
 		if( lo+pos[i+1] > lo+pos[i] + 1) {
 			msd(a,lo+pos[i],lo+pos[i+1],d+1);
 		}
 	}
-	}
+	
 }
 
 void msd_main(vec &a){
@@ -92,7 +77,7 @@ int main(int argc, char* argv[]){
     //printf("%s %d\n",argv[1],arr_len);
 
 	omp_set_num_threads(num_thread);
-	//omp_set_nested(true);  // when add it, the elapsed time is over 20sec
+	omp_set_nested(true);
 	for(int i=0; i<arr_len; ++i){
 		//inputfile.getline(array[i],20);
 		std::string tmp;

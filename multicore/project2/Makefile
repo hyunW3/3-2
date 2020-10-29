@@ -6,6 +6,8 @@ clean:
 	rm main.exe output.txt
 gdb:
 	gdb ./main.exe
+diff:
+	diff output_single.txt output.txt
 single:
 	g++ MSD.cpp -o MSD.exe 
 single_run:

@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "stdexcept": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "atomic": "cpp",
+        "algorithm": "cpp"
     }
 }

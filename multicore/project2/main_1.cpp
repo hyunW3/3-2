@@ -16,22 +16,16 @@ void msd(vec &a, int lo, int hi, int d){
 	std::string temp[hi-lo+1];
 	int count[256] = {0,};
 	int pos[256]={0,};
-	int tmp;
-	int zeros =0;
 	if(hi <= lo + 1) return;
 
-	#pragma omp parallel private(tmp) shared(zeros)//shared(a,lo,hi)
+	#pragma omp parallel 
 	{
-	//#pragma omp for 
+	//#pragma omp for
 	#pragma omp single
 	for(int i=lo; i<hi; ++i){
 		if(a[i].length() > d){
-			//#pragma omp atomic
 			count[a[i].at(d) + 1]++;
-		} else {
-			//#pragma omp atomic
-			count[0]++;
-		}
+		} else count[0]++;
 	}
 	#pragma omp single
 	for(int k=1; k<256; ++k){
@@ -42,22 +36,16 @@ void msd(vec &a, int lo, int hi, int d){
 		pos[k] = count[k];
 	}
 	//printf("\n");
-	//#pragma omp single 
-	#pragma omp for
+	int zeros =0;
+	int tmp;
+	#pragma omp single 
 	for(int i=lo; i<hi; ++i){
 		if(a[i].length() > d){
-			tmp = a[i].at(d);
-			temp[count[tmp]] = a[i];
-			count[tmp]++;
-			//temp[count[a[i].at(d)]] = a[i];
-			//count[a[i].at(d)]++;
+			temp[count[a[i].at(d)]] = a[i];
+			count[a[i].at(d)]++;
 		} else {
-			#pragma omp critical
-			{
-				temp[zeros] = a[i];
-				zeros++;
-
-			}
+			temp[zeros] = a[i];
+			zeros++;
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);

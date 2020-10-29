@@ -16,21 +16,13 @@ void msd(vec &a, int lo, int hi, int d){
 	std::string temp[hi-lo+1];
 	int count[256] = {0,};
 	int pos[256]={0,};
+	int tmp;
 	if(hi <= lo + 1) return;
 	for(int i=lo; i<hi; ++i){
-		try{
-			count[int(a[i].at(d)) + 1]++;
-		}catch (std::out_of_range& oor) {
-			count[0]++;
-		}
+		if(a[i].length() > d){
+			count[a[i].at(d) + 1]++;
+		} else count[0]++;
 	}
-/*
-	for(int k=1; k<256; ++k){
-		printf("%d ",count[k]);
-		if(k == 89) printf("\n");
-	}
-	printf("\n");
-*/
 	for(int k=1; k<256; ++k){
 		count[k] += count[k-1];
 		pos[k] = count[k];
@@ -38,10 +30,11 @@ void msd(vec &a, int lo, int hi, int d){
 	//printf("\n");
 	int zeros =0;
 	for(int i=lo; i<hi; ++i){
-		try{
-			temp[count[a[i].at(d)]] = a[i];
-			count[a[i].at(d)]++;
-		}catch (std::out_of_range& oor) {
+		if(a[i].length() > d){
+			tmp = a[i].at(d);
+			temp[count[tmp]] = a[i];
+			count[tmp]++;
+		} else {
 			temp[zeros] = a[i];
 			zeros++;
 		}
@@ -51,7 +44,9 @@ void msd(vec &a, int lo, int hi, int d){
 		a[i+lo] = temp[i];
 	}
 	for(int i=1; i<255; ++i){
-		msd(a,lo+pos[i],lo+pos[i+1],d+1);
+		if( lo+pos[i+1] > lo+pos[i] + 1) {
+			msd(a,lo+pos[i],lo+pos[i+1],d+1);
+		}
 	}
 	
 }

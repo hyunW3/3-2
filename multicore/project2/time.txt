@@ -1,8 +1,15 @@
-159077c159077
-< Elapsed time: 0.101727 sec
+159076c159076,159077
+< Elapsed time: 0.0655544 sec
 ---
-> Elapsed time: 0.0606288 sec
-10003c10003
-< Elapsed time: 0.0259284 sec
+> 
+> Elapsed time: 0.0700889 sec
+10002c10002,10003
+< Elapsed time: 0.0250121 sec
 ---
-> Elapsed time: 0.0310473 sec
+> 
+> Elapsed time: 0.028984 sec
+466552c466552,466553
+< Elapsed time: 0.459461 sec
+---
+> 
+> Elapsed time: 1.21593 sec

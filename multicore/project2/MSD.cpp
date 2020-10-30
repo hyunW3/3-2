@@ -13,8 +13,10 @@ int arr_len;
 typedef std::vector<std::string> vec;
 vec a;
 void msd( int lo, int hi, unsigned int d){
-	printf("hi-1 %d %d %d\n",lo,hi,d);
-	std::string temp[hi-lo+1];
+	//printf("hi-1 %d %d %d\n",lo,hi,d);
+	//std::string temp[hi-lo+1];
+	vec temp;
+	temp.resize(hi-lo+1);
 	//printf("hi-2 \n");
 	int count[256] = {0,};
 	int pos[256]={0,};
@@ -24,7 +26,7 @@ void msd( int lo, int hi, unsigned int d){
 	for(int i=lo; i<hi; ++i){
 		//std::cout << a[i].length() <<" ";
 		if(static_cast<unsigned int>(a[i].length()) > d){
-			count[a[i].at(d) + 1]++;
+			count[a[i][d] + 1]++;
 		} else count[0]++;
 	}
 	//printf("hi 1 \n");
@@ -37,7 +39,7 @@ void msd( int lo, int hi, unsigned int d){
 	int zeros =0;
 	for(int i=lo; i<hi; ++i){
 		if(static_cast<unsigned int>(a[i].length()) > d){
-			tmp = a[i].at(d);
+			tmp = a[i][d];
 			temp[count[tmp]] = a[i];
 			//strcpy(temp[count[tmp]],a[i].c_str());
 			count[tmp]++;
@@ -78,6 +80,7 @@ int main(int argc, char* argv[]){
 	int end_show = atoi(argv[4]);
     //printf("%s %d\n",argv[1],arr_len);
 	std::string tmp;
+	a.clear();
 	for(int i=0; i<arr_len; ++i){
 		//inputfile.getline(array[i],20);
 		std::getline(inputfile,tmp);
@@ -87,7 +90,7 @@ int main(int argc, char* argv[]){
 	//now we measure the time
 	//std::cout << array.size() <<"\n";
 	clock_gettime(CLOCK_REALTIME, &start);
-	msd_main();
+	msd(0, arr_len, 0);
 	//serial radix sort
 
 	// we are done with measuring the time
@@ -95,9 +98,14 @@ int main(int argc, char* argv[]){
 
 	//print out the result
 	printf("%d to %d\n",start_show,end_show);
+	for (vec::const_iterator i = a.begin(); i != a.end(); ++i){
+    	std::cout << *i << '\n';
+	}
+	/*
 	for(int i=start_show; i<=end_show; ++i){
 		std::cout << a[i] <<"\n";
 	}
+	*/
     //std::cout << "\n";
 	std::cout << "Elapsed time: " << (stop.tv_sec - start.tv_sec) + ((double) (stop.tv_nsec - start.tv_nsec))/BILLION << " sec" << "\n";
 

@@ -2,12 +2,11 @@ import os
 import threading
 import socket
 from datetime import datetime 
-keep_alive = "Connection: Keep-Alive\r\nKeep-Alive: timeout=5, max=1000\r\n"
 server_name = "2016310932 web server "
-response_202 =  "HTTP/1.1 200 OK\r\nServer: {0}\r\n".format(server_name) + keep_alive
-response_404 =  "HTTP/1.1 404 NOT FOUND\r\nServer: {0}\r\n"+keep_alive+"Content-Length: 13\r\nContent-Type: text/plain\r\n\r\n404 NOT FOUND".format(
-            server_name) 
-response_403 =  "HTTP/1.1 403 FORBIDDEN\r\nServer: {0}\r\n"+keep_alive+"Content-Length: 13\r\nContent-Type: text/plain\r\n\r\n403 Forbidden".format(
+response_202 =  "HTTP/1.1 200 OK\r\nServer: {0}\r\n".format(server_name)
+response_404 =  "HTTP/1.1 404 NOT FOUND\r\nServer: {0}\r\nContent-Length: 13\r\nContent-Type: text/plain\r\n\r\n404 NOT FOUND".format(
+            server_name)
+response_403 =  "HTTP/1.1 403 FORBIDDEN\r\nServer: {0}\r\nContent-Length: 13\r\nContent-Type: text/plain\r\n\r\n403 Forbidden".format(
             server_name)
             
 # table for ID,PASSWORD
@@ -41,12 +40,12 @@ def time_cal(id_compare):
             diff = (now-expire_table[ID]).seconds
             return str(30 - diff)
     return " "
-    
 def serv_work(client_socket, addr):
+    #print(client_socket)
     data = client_socket.recv(65535)
     if len(data) < 1 :
         return
-    #print(data)
+    print(data)
     request_data = data.decode().split()
     request_method = request_data[0]
     request_loc = request_data[1]
@@ -96,10 +95,10 @@ def serv_work(client_socket, addr):
                 request_id = request_data[-2][3:-1]
                 request_pw = request_data[-1][9:]
                 if Login_info(request_id,request_pw) == False :
-                    #if "index" not in file_loc:
-                        #print(file_loc)
-                    client_socket.sendall(response_403.encode())
-                    return
+                    if "index" not in file_loc:
+                        print(file_loc)
+                        client_socket.sendall(response_403.encode())
+                        return
                 response_data = response_202 + "Date: {0}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
                 item = open(file_loc,"rb")
                 item_data = item.read()
@@ -143,6 +142,7 @@ def serv_work(client_socket, addr):
         print("sending data:")
         print(response_data)
         client_socket.send(response_data.encode())
+        
     else: # request is not GET
         response_data = "{0} 405 Method Not Allowed\nServer: {1}\nDate: {2}\n".format(request_version, server_name, 
         datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
@@ -150,9 +150,13 @@ def serv_work(client_socket, addr):
 
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    #https://stackoverflow.com/questions/17740492/how-i-will-use-setsockopt-and-getsockopt-with-keep-alive-in-linux-c-programming
+    server_socket.setsockopt(socket.SOL_SOCKET,socket.SO_KEEPALIVE,1)
+    server_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
+    server_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 3)
+    server_socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
     server_socket.bind(('',10080))
-    server_socket.listen(10)
+    server_socket.listen(5)
     print('The TCP server is ready to receive')
     while True:
         client_socket, addr = server_socket.accept()

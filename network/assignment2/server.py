@@ -20,7 +20,7 @@ def cookie_clear():
     text=""
     for ID,PW in user_table.items():
         text += "Set-Cookie: id="+ID+"; max-age=0 Secure; \r\n" + "Set-Cookie: password="+PW+";max-age=0 Secure; \r\n"
-    print(text)
+    #print(text)
     return text
     
 def print_info():
@@ -46,11 +46,11 @@ def serv_work(client_socket, addr):
     data = client_socket.recv(65535)
     if len(data) < 1 :
         return
-    #print(data)
     request_data = data.decode().split()
     request_method = request_data[0]
     request_loc = request_data[1]
     request_version = request_data[2]
+    print(request_method +" "+request_loc)
     if request_method == "GET":
         if request_loc == '/' :
             response_data = response_202 + "Date: {0}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
@@ -62,7 +62,7 @@ def serv_work(client_socket, addr):
                 #response_data += "Content-Length: %d\r\n" % len(page_data) # this doesn't work
                 response_data += "Content-Type: text/html;charset=UTF-8\r\n\r\n"
                 response_data += (page_data +"\r\n\r\n")
-                print("sending data:")
+                #print("sending data:")
                 #print(response_data)
                 client_socket.sendall(response_data.encode())
             else :

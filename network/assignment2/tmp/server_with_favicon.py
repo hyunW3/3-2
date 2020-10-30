@@ -56,7 +56,6 @@ def serv_work(client_socket, addr):
             if os.path.exists("./index.html"):
                 page = open("./index.html","r")
                 page_data = page.read()
-                response_data += cookie_clear()
                 #response_data += "Content-Length: %d\r\n" % len(page_data) # this doesn't work
                 response_data += "Content-Type: text/html;charset=UTF-8\r\n\r\n"
                 response_data += (page_data +"\r\n\r\n")
@@ -82,7 +81,21 @@ def serv_work(client_socket, addr):
             response_data += "Content-Length: "+page_len+"\r\nContent-Type: text/html;charset=UTF-8\r\n\r\n"
             client_socket.sendall(response_data.encode())
             client_socket.sendall(page_data.encode())
-
+            
+        elif request_loc == "/favicon.ico" :
+            request_id = request_data[-2][3:-1]
+            request_pw = request_data[-1][9:]                
+            if Login_info(request_id,request_pw) == False :
+                client_socket.sendall(response_403.encode())
+                print("favicon fail")
+                return
+            response_data = response_202 + "Date: {0}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
+            item = open("./favicon.ico","rb")
+            item_data = item.read()
+            response_data += "Content-Length: {0}\r\n".format(len(item_data))
+            response_data += "Content-Type: image/jpeg\r\n\r\n"
+            client_socket.sendall(response_data.encode())
+            client_socket.sendall(item_data)
         #    return;
         elif len(request_loc) > 1:
             # split b/w image & other
@@ -91,11 +104,15 @@ def serv_work(client_socket, addr):
             #print(file_loc[-3:])
             # should check privileged to access it
             if os.path.exists(file_loc) :
+                #if request_data[-2][:1] == "id":
                 request_id = request_data[-2][3:-1]
+                #if request_data[-1][:7] == "password":
                 request_pw = request_data[-1][9:]
+                #print(request_id,request_pw)
+                #print(request_id,request_pw)
+                #print(Login_info(request_id,request_pw))
                 if Login_info(request_id,request_pw) == False :
                     if "index" not in file_loc:
-                        print(file_loc)
                         client_socket.sendall(response_403.encode())
                         return
                 response_data = response_202 + "Date: {0}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))

@@ -62,8 +62,6 @@ def serv_work(client_socket, addr):
                 #response_data += "Content-Length: %d\r\n" % len(page_data) # this doesn't work
                 response_data += "Content-Type: text/html;charset=UTF-8\r\n\r\n"
                 response_data += (page_data +"\r\n\r\n")
-                #print("sending data:")
-                #print(response_data)
                 client_socket.sendall(response_data.encode())
             else :
                 response_data = response_404 #+ "Date: {2}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
@@ -121,9 +119,6 @@ def serv_work(client_socket, addr):
                 #print(response_data)
                 client_socket.sendall(response_data.encode())
     elif request_method == "POST":
-        #print("here is -1, -2")
-        #print(request_data[-1]) # password
-        #print(request_data[-2]) # ID
         request_id = request_data[-2][3:]
         request_pw = request_data[-1][9:]
         #print(request_id,request_pw)
@@ -140,8 +135,8 @@ def serv_work(client_socket, addr):
         #print("setting time: " + str(expire_table[request_id]))
         response_data += "Content-Type: text/html\r\n" + "charset=UTF-8\r\n\r\n"
         response_data += (page_data +"\r\n\r\n")
-        print("sending data:")
-        print(response_data)
+        #print("sending data:")
+        #print(response_data)
         client_socket.send(response_data.encode())
     else: # request is not GET
         response_data = "{0} 405 Method Not Allowed\nServer: {1}\nDate: {2}\n".format(request_version, server_name, 
@@ -150,7 +145,7 @@ def serv_work(client_socket, addr):
 
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind(('',10080))
     server_socket.listen(10)
     print('The TCP server is ready to receive')
@@ -161,8 +156,5 @@ def main():
         con_Thread.start()
         #print(client_socket.fileno())
 if __name__ == "__main__":
-    #print(Login_info("ID=hwbae","password=1234"))
     main()
 
-#https://noodle-dev.tistory.com/63
-#https://kentakang.com/133

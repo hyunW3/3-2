@@ -1,15 +1,234 @@
 159076c159076,159077
-< Elapsed time: 0.0655544 sec
+< Elapsed time: 0.0540483 sec
 ---
 > 
-> Elapsed time: 0.0700889 sec
+> Elapsed time: 0.0477802 sec
 10002c10002,10003
-< Elapsed time: 0.0250121 sec
+< Elapsed time: 0.015256 sec
 ---
 > 
-> Elapsed time: 0.028984 sec
+> Elapsed time: 0.024737 sec
 466552c466552,466553
-< Elapsed time: 0.459461 sec
+< Elapsed time: 0.510555 sec
 ---
 > 
-> Elapsed time: 1.21593 sec
+> Elapsed time: 0.475303 sec
+
+================================
+2020-10-30 16:26:26
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0496904 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0234457 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.437759 sec
+================================
+2020-11-01 15:46:08
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0527091 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0219001 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.417297 sec
+================================
+2020-11-01 16:04:16
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0456704 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0244094 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.481237 sec
+
+================================
+2020-11-01 16:06:14
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0441525 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0227444 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.480626 sec
+
+================================
+2020-11-01 16:07:54 with 32 threads
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0527406 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0148489 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.558322 sec
+
+
+================================
+main_20201102_00:41:55.cpp with -O2 option
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0411373 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.023234 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.40716 sec
+================================
+main_20201102_00:42:37.cpp _ 32 threads
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0515528 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0185834 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.533062 sec
+================================
+main_20201102_00:48:10.cpp
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0418565 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0208168 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.412434 sec
+================================
+main_20201102_01:46:36.cpp _ struct ver
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.0540036 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0256992 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.508722 sec
+================================
+main_20201102_01:59:52.cpp
+159076c159076,159077
+< Elapsed time: 0.0540483 sec
+---
+> 
+> Elapsed time: 0.047346 sec
+10002c10002,10003
+< Elapsed time: 0.015256 sec
+---
+> 
+> Elapsed time: 0.0207207 sec
+466552c466552,466553
+< Elapsed time: 0.510555 sec
+---
+> 
+> Elapsed time: 0.404558 sec
+================================
+main_20201102_22:21:42.cpp
+159076c159076,159077
+< Elapsed time: 0.35348 sec
+---
+> 
+> Elapsed time: 0.0746485 sec
+10002c10002,10003
+< Elapsed time: 0.167404 sec
+---
+> 
+> Elapsed time: 0.0327714 sec
+466552c466552,466553
+< Elapsed time: 7.91841 sec
+---
+> 
+> Elapsed time: 0.648098 sec
+325241c325241,325242
+< Elapsed time: 0.0105676 sec
+---
+> 
+> Elapsed time: 0.0320693 sec
+================================
+main_20201102_22:22:02.cpp
+159076c159076,159077
+< Elapsed time: 0.35348 sec
+---
+> 
+> Elapsed time: 0.0726638 sec
+10002c10002,10003
+< Elapsed time: 0.167404 sec
+---
+> 
+> Elapsed time: 0.0343588 sec
+466552c466552,466553
+< Elapsed time: 7.91841 sec
+---
+> 
+> Elapsed time: 0.651869 sec
+325241c325241,325242
+< Elapsed time: 0.0105676 sec
+---
+> 
+> Elapsed time: 0.0310765 sec

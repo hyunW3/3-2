@@ -22,7 +22,7 @@ void msd( int lo, int hi, unsigned int d){
 	int tmp;
 	int zeros =0;
 	if(hi <= lo + 1) return;
-
+	//https://stackoverflow.com/questions/20413995/reducing-on-array-in-openmp
 	#pragma omp parallel private(tmp) shared(count,zeros,temp)  //shared(a,lo,hi)
 	{
 	//#pragma omp for 
@@ -40,22 +40,18 @@ void msd( int lo, int hi, unsigned int d){
 	#pragma omp single
 	for(int k=1; k<256; ++k){
 		count[k] += count[k-1];
-	}
-	#pragma omp for
-	for(int k=1; k<256; ++k){
 		pos[k] = count[k];
 	}
+	
 	//printf("\n");
 	#pragma omp single 
-	//#pragma omp for
+	//#pragma omp for schedule(dynamic,1)
 	for(int i=lo; i<hi; ++i){
 		if(static_cast<unsigned int>(a[i].length()) > d){
 			//tmp = a[i].at(d);
 			tmp = a[i][d];
 			temp[count[tmp]] = a[i];
 			count[tmp]++;
-			//temp[count[a[i].at(d)]] = a[i];
-			//count[a[i].at(d)]++;
 		} else {
 			temp[zeros] = a[i];
 			zeros++;
@@ -68,10 +64,10 @@ void msd( int lo, int hi, unsigned int d){
 	}
 	//#pragma omp for schedule(dynamic,4)
 	#pragma omp single // schedule(dynamic,4)
-	for(int i=1; i<255; ++i){
-		if( lo+pos[i+1] > lo+pos[i] + 1) {
+	for(int i=2; i<255; ++i){
+		if( lo+pos[i] > lo+pos[i-1] + 1) {
 			#pragma omp task 
-			msd(lo+pos[i],lo+pos[i+1],d+1);
+			msd(lo+pos[i-1],lo+pos[i],d+1);
 		}
 	}
 	} // end omp parallel
@@ -101,8 +97,6 @@ int main(int argc, char* argv[]){
 	}
 	inputfile.close();
 	//now we measure the time
-	//std::cout << a.capacity() << " is capacity\n";
-	//std::cout << a.max_size() << " is max size\n";
 	clock_gettime(CLOCK_REALTIME, &start);
 	msd(0, arr_len, 0);
 	//serial radix sort

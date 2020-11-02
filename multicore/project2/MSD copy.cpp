@@ -14,7 +14,9 @@ typedef std::vector<std::string> vec;
 vec a;
 void msd( int lo, int hi, unsigned int d){
 	//printf("hi-1 %d %d %d\n",lo,hi,d);
-	std::string temp[hi-lo+1];
+	//std::string temp[hi-lo+1];
+	vec temp;
+	temp.resize(hi-lo+1);
 	//printf("hi-2 \n");
 	int count[256] = {0,};
 	int pos[256]={0,};

@@ -31,8 +31,12 @@ void msd( int lo, int hi, unsigned int d){
 	}
 	//printf("hi 1 \n");
 	for(int k=1; k<256; ++k){
-		count[k] += count[k-1];
-		pos[k] = count[k];
+		for(int j=0; j<=k; j++){
+			pos[k] += count[j];
+		}
+	}
+	for(int k=1; k<256; ++k){
+		count[k] = pos[k];
 	}
 	//printf("hi 2 \n");
 	//printf("\n");
@@ -64,10 +68,6 @@ void msd( int lo, int hi, unsigned int d){
 	
 }
 
-void msd_main(){
-	//printf("hi main\n");
-	msd(0, arr_len, 0);
-}
 int main(int argc, char* argv[]){
 	// declaration
 	struct timespec start,stop;

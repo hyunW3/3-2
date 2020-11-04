@@ -12,7 +12,6 @@
 int arr_len;
 typedef std::vector<std::string> vec;
 vec a;
-std::vector<unsigned int> len;
 void msd( int lo, int hi, unsigned int d){
 	//std::string temp[hi-lo+1];
 	vec temp;
@@ -28,8 +27,8 @@ void msd( int lo, int hi, unsigned int d){
 	//#pragma omp for 
 	#pragma omp single
 	for(int i=lo; i<hi; ++i){
-		//if(static_cast<unsigned int>(a[i].length()) > d){
-		if(len[i] > d){
+		if(static_cast<unsigned int>(a[i].length()) > d){
+			//#pragma omp atomic
 			//count[a[i].at(d) + 1]++;
 			count[a[i][d] + 1]++;
 		} else {
@@ -47,8 +46,7 @@ void msd( int lo, int hi, unsigned int d){
 	#pragma omp single 
 	//#pragma omp for schedule(dynamic,1)
 	for(int i=lo; i<hi; ++i){
-		//if(static_cast<unsigned int>(a[i].length()) > d){
-		if(len[i] > d){
+		if(static_cast<unsigned int>(a[i].length()) > d){
 			//tmp = a[i].at(d);
 			tmp = a[i][d];
 			temp[count[tmp]] = a[i];
@@ -87,7 +85,6 @@ int main(int argc, char* argv[]){
 	int num_thread = atoi(argv[5]);
     //printf("%s %d\n",argv[1],arr_len);
 	a.resize(arr_len+1);
-	len.resize(arr_len+1);
 	omp_set_num_threads(num_thread);
 	//omp_set_nested(true);  // when add it, the elapsed time is over 20sec
 	for(int i=0; i<arr_len; ++i){
@@ -96,7 +93,6 @@ int main(int argc, char* argv[]){
 		//std::string tmp;
 		//std::getline(inputfile,tmp);
 		//a.push_back(std::move(tmp));
-		len[i]= a[i].length();
 	}
 	inputfile.close();
 	//now we measure the time

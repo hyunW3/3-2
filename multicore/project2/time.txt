@@ -400,3 +400,45 @@ main_20201103_16:01:58.cpp
 ---
 > 
 > Elapsed time: 20.4535 sec
+================================
+main_20201105_00:33:10.cpp
+159076c159076,159077
+< Elapsed time: 0.866426 sec
+---
+> 
+> Elapsed time: 0.131932 sec
+10002c10002,10003
+< Elapsed time: 0.382252 sec
+---
+> 
+> Elapsed time: 0.0821728 sec
+466552c466552,466553
+< Elapsed time: 21.3419 sec
+---
+> 
+> Elapsed time: 1.85868 sec
+325241c325241,325242
+< Elapsed time: 0.0278618 sec
+---
+> 
+> Elapsed time: 0.0877783 sec
+1164970c1164970,1164971
+< Elapsed time: 6.16589 sec
+---
+> 
+> Elapsed time: 1.05784 sec
+1000002c1000002,1000003
+< Elapsed time: 59.1403 sec
+---
+> 
+> Elapsed time: 3.8486 sec
+10000002c10000002,10000003
+< Elapsed time: 92.1775 sec
+---
+> 
+> Elapsed time: 12.2154 sec
+100000002c100000002,100000003
+< Elapsed time: 216.274 sec
+---
+> 
+> Elapsed time: 58.6421 sec

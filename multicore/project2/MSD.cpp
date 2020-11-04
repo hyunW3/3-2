@@ -85,6 +85,7 @@ int main(int argc, char* argv[]){
 		//inputfile.getline(array[i],20);
 		std::getline(inputfile,tmp);
 		a.push_back(std::move(tmp));
+		//std::getline(inputfile,a[i]);
 	}
 	inputfile.close();
 	//now we measure the time

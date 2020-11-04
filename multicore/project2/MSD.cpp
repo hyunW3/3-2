@@ -60,9 +60,9 @@ void msd( int lo, int hi, unsigned int d){
 	}
 	
 	//printf("hi 4 \n");
-	for(int i=1; i<255; ++i){
-		if( lo+pos[i+1] > lo+pos[i] + 1) {
-			msd(lo+pos[i],lo+pos[i+1],d+1);
+	for(int i=2; i<255; ++i){
+		if( lo+pos[i] > lo+pos[i-1] + 1) {
+			msd(lo+pos[i-1],lo+pos[i],d+1);
 		}
 	}
 	

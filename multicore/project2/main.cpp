@@ -12,7 +12,6 @@
 int arr_len;
 typedef std::vector<std::string> vec;
 vec a;
-
 void msd( int lo, int hi, unsigned int d){
 	//std::string temp[hi-lo+1];
 	vec temp;
@@ -29,7 +28,6 @@ void msd( int lo, int hi, unsigned int d){
 	#pragma omp single
 	for(int i=lo; i<hi; ++i){
 		if(static_cast<unsigned int>(a[i].length()) > d){
-			//#pragma omp atomic
 			//count[a[i].at(d) + 1]++;
 			count[a[i][d] + 1]++;
 		} else {

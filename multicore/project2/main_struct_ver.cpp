@@ -14,7 +14,7 @@ typedef std::vector<std::string> vec;
 vec a;
 typedef struct {
 	int val;
-	char padding[32];
+	char padding[60];
 } container;
 void msd( int lo, int hi, unsigned int d){
 	//std::string temp[hi-lo+1];
@@ -48,13 +48,8 @@ void msd( int lo, int hi, unsigned int d){
 	for(int k=1; k<256; ++k){
 		//count[k] += count[k-1];
 		count[k].val += count[k-1].val;
-	}
-	#pragma omp for
-	for(int k=1; k<256; ++k){
-		//pos[k] = count[k];
-	
 		pos[k].val = count[k].val;
-		}
+	}
 	//printf("\n");
 	#pragma omp single 
 	//#pragma omp for schedule(dynamic,1)
@@ -78,16 +73,10 @@ void msd( int lo, int hi, unsigned int d){
 	}
 	//#pragma omp for schedule(dynamic,4)
 	#pragma omp single // schedule(dynamic,4)
-	for(int i=1; i<255; ++i){
-		/*
-		if( lo+pos[i+1] > lo+pos[i] + 1) {
+	for(int i=2; i<255; ++i){
+		if( lo+pos[i].val > lo+pos[i-1].val + 1) {
 			#pragma omp task 
-			msd(lo+pos[i],lo+pos[i+1],d+1);
-		}
-		*/
-		if( lo+pos[i+1].val > lo+pos[i].val + 1) {
-			#pragma omp task 
-			msd(lo+pos[i].val,lo+pos[i+1].val,d+1);
+			msd(lo+pos[i-1].val,lo+pos[i].val,d+1);
 		}
 	}
 	} // end omp parallel

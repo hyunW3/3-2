@@ -15,7 +15,7 @@ run:
 	./main.exe ./input/example_1million.txt 1000000 0 1000000 16 > ./output/output_example_1million.txt
 	./main.exe ./input/example_10million.txt 10000000 0 10000000 16 > ./output/output_example_10million.txt
 	./main.exe ./input/example_100million.txt 100000000 0 100000000 16 > ./output/output_example_100million.txt
-	#./main.exe ./input/example_1000million.txt 1000000000 0 1000000000 16 > ./output/output_example_1000million.txt
+	./main.exe ./input/example_1000million.txt 1000000000 0 1000000000 16 > ./output/output_example_1000million.txt
 run_32:
 	./main.exe ./input/example_1million.txt 1000000 0 1000000 32 > ./output/output_example_1million_32.txt
 	./main.exe ./input/example_10million.txt 10000000 0 10000000 32 > ./output/output_example_10million_32.txt
@@ -28,9 +28,13 @@ run_core:
 	diff ./output/output_single_example_10million.txt ./output/output_example_10million.txt | tee -a time.txt
 	diff ./output/output_single_example_100million.txt ./output/output_example_100million.txt | tee -a time.txt
 run_test:
+	g++ main.cpp -O2 -Wall -o main.exe  -fopenmp
 	./main.exe ./input/example_1000million.txt 1000000000 0 1000000000 16 > ./output/output_example_1000million.txt
-	#./qsort.exe ./input/example_1000million.txt 1000000000 0 1000000000 16 > ./output/output_single_example_1000million.txt
 	diff ./output/output_single_example_1000million.txt ./output/output_example_1000million.txt
+	#./main.exe ./input/EMMA.word 159074 0 159074 16 > ./output/output.txt
+	d#iff ./output/output_single.txt ./output/output.txt | tee -a time.txt
+	#./qsort.exe ./input/example_1000million.txt 1000000000 0 1000000000 16 > ./output/output_single_example_1000million.txt
+
 clean:
 	rm *.exe 
 clean_output:

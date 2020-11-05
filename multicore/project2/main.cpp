@@ -10,18 +10,24 @@
 
 #define BILLION  1000000000L
 int arr_len;
-int num_thread;
 typedef std::vector<std::string> vec;
 vec a;
-void msd(int lo, int& hi, unsigned int d){
+typedef struct {
+	int val;
+	char padding[60];
+} container;
+void msd( int lo, int hi, unsigned int d){
 	//std::string temp[hi-lo+1];
 	vec temp;
 	temp.resize(hi-lo+1);
-	int count[256] = {0,};
-	int pos[256]={0,};
+	//int count[256] = {0,};
+	container count[256] ={0,};
+	//int pos[256]={0,};
+	container pos[256] ={0,};
 	int tmp;
 	int zeros =0;
 	if(hi <= lo + 1) return;
+	//https://stackoverflow.com/questions/20413995/reducing-on-array-in-openmp
 	#pragma omp parallel private(tmp) shared(pos,count,zeros,temp)  //shared(a,lo,hi)
 	{
 	//#pragma omp for 
@@ -30,19 +36,22 @@ void msd(int lo, int& hi, unsigned int d){
 		if(static_cast<unsigned int>(a[i].length()) > d){
 			//#pragma omp atomic
 			//count[a[i].at(d) + 1]++;
-			count[a[i][d] + 1]++;
+			//count[a[i][d] + 1]++;
+			count[a[i][d] + 1].val++;
 		} else {
 			//#pragma omp atomic
-			count[0]++;
+			//count[0]++;
+			count[0].val++;
 		}
 	}
+	
 	#pragma omp single
 	for(int k=1; k<256; ++k){
-		if(count[k-1] != 0) count[k] += count[k-1];
+		if(count[k-1].val != 0) count[k].val += count[k-1].val;
 	}
 	#pragma omp for 
 	for(int k=1; k<256; ++k){
-		pos[k] = count[k];
+		pos[k].val = count[k].val;
 	}
 	
 	#pragma omp single 
@@ -51,8 +60,8 @@ void msd(int lo, int& hi, unsigned int d){
 		if(static_cast<unsigned int>(a[i].length()) > d){
 			//tmp = a[i].at(d);
 			tmp = a[i][d];
-			temp[count[tmp]] = a[i];
-			count[tmp]++;
+			temp[count[tmp].val] = a[i];
+			count[tmp].val++;
 		} else {
 			temp[zeros] = a[i];
 			zeros++;
@@ -67,29 +76,9 @@ void msd(int lo, int& hi, unsigned int d){
 	//#pragma omp for schedule(dynamic,4)
 	#pragma omp single // schedule(dynamic,4)
 	for(int i=2; i<255; ++i){
-		int back = lo+pos[i];
-		int front = lo+pos[i-1];
-		if( back > front + 2) {
+		if( lo+pos[i].val > lo+pos[i-1].val + 1) {
 			#pragma omp task 
-			msd(front,back,d+1);
-		} else if( back == front + 2){
-			#pragma omp task 
-			{
-			unsigned int d1 = d+1;
-			int index = front;
-			unsigned int len1 = a[index].length();
-			unsigned int len2 = a[index+1].length();
-			while( (len1 >= d1) && (len2 >= d1) ){
-				char tmp1 = (len1 > d1)?(a[index][d1]):(0);
-				char tmp2 = (len2 > d1)?(a[index+1][d1]):(0);
-				//printf("%d %d\n",tmp1,tmp2);
-				if(tmp1 > tmp2){
-					a[index].swap(a[index+1]);
-					break;
-				} else if((tmp1 == tmp2)) d1++;
-				else break;
-			}
-			}
+			msd(lo+pos[i-1].val,lo+pos[i].val,d+1);
 		}
 	}
 	} // end omp parallel
@@ -105,7 +94,7 @@ int main(int argc, char* argv[]){
     arr_len = atoi(argv[2]);
 	int start_show = atoi(argv[3]);
 	int end_show = atoi(argv[4]);
-	num_thread = atoi(argv[5]);
+	int num_thread = atoi(argv[5]);
     //printf("%s %d\n",argv[1],arr_len);
 	a.resize(arr_len+1);
 	omp_set_num_threads(num_thread);

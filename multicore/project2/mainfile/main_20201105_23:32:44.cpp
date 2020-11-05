@@ -12,35 +12,46 @@
 int arr_len;
 typedef std::vector<std::string> vec;
 vec a;
+typedef struct {
+	int val;
+	char padding[60];
+} container;
 void msd( int lo, int hi, unsigned int d){
 	//std::string temp[hi-lo+1];
 	vec temp;
 	temp.resize(hi-lo+1);
-	int count[256] = {0,};
-	int pos[256]={0,};
+	//int count[256] = {0,};
+	container count[256] ={0,};
+	//int pos[256]={0,};
+	container pos[256] ={0,};
 	int tmp;
 	int zeros =0;
 	if(hi <= lo + 1) return;
-	#pragma omp parallel private(tmp) shared(count,zeros,temp) firstprivate(lo,hi)  //shared(a,lo,hi)	{
+	//https://stackoverflow.com/questions/20413995/reducing-on-array-in-openmp
+	#pragma omp parallel private(tmp) shared(pos,count,zeros,temp)  //shared(a,lo,hi)
 	{
-	#pragma omp for 
-	//#pragma omp single
+	//#pragma omp for 
+	#pragma omp single
 	for(int i=lo; i<hi; ++i){
 		if(static_cast<unsigned int>(a[i].length()) > d){
-			#pragma omp atomic
-			count[a[i][d] + 1]++;
+			//#pragma omp atomic
+			//count[a[i].at(d) + 1]++;
+			//count[a[i][d] + 1]++;
+			count[a[i][d] + 1].val++;
 		} else {
-			#pragma omp atomic
-			count[0]++;
+			//#pragma omp atomic
+			//count[0]++;
+			count[0].val++;
 		}
 	}
+	
 	#pragma omp single
 	for(int k=1; k<256; ++k){
-		if(count[k-1] != 0) count[k] += count[k-1];
+		if(count[k-1].val != 0) count[k].val += count[k-1].val;
 	}
 	#pragma omp for 
 	for(int k=1; k<256; ++k){
-		pos[k] = count[k];
+		pos[k].val = count[k].val;
 	}
 	
 	#pragma omp single 
@@ -49,24 +60,25 @@ void msd( int lo, int hi, unsigned int d){
 		if(static_cast<unsigned int>(a[i].length()) > d){
 			//tmp = a[i].at(d);
 			tmp = a[i][d];
-			temp[count[tmp]] = a[i];
-			count[tmp]++;
+			temp[count[tmp].val] = a[i];
+			count[tmp].val++;
 		} else {
 			temp[zeros] = a[i];
 			zeros++;
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);
+	int size = hi-lo;
 	#pragma omp for 
-	for(int i=0; i<hi-lo; ++i){
+	for(int i=0; i<size; ++i){
 		a[i+lo] = temp[i];
 	}
 	//#pragma omp for schedule(dynamic,4)
 	#pragma omp single // schedule(dynamic,4)
 	for(int i=2; i<255; ++i){
-		if( lo+pos[i] > lo+pos[i-1] + 1) {
+		if( lo+pos[i].val > lo+pos[i-1].val + 1) {
 			#pragma omp task 
-			msd(lo+pos[i-1],lo+pos[i],d+1);
+			msd(lo+pos[i-1].val,lo+pos[i].val,d+1);
 		}
 	}
 	} // end omp parallel

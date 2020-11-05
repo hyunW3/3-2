@@ -42,7 +42,13 @@ diff:
 	diff ./output/output_single_example_100million.txt ./output/output_example_100million.txt | tee -a time.txt
 	#cat time.txt
 diff_one:
-	#diff ./output/output_single.txt ./output/output.txt
+	diff ./output/output_single.txt ./output/output.txt
+	diff ./output/output_single_wordlist.10000.txt ./output/output_wordlist.10000.txt 
+	diff ./output/output_single_w2.txt ./output/output_w2.txt 
+	diff ./output/output_single_example.txt ./output/output_example.txt 
+	diff ./output/output_single_example6MB.txt ./output/output_example6MB.txt
+	diff ./output/output_single_example_1million.txt ./output/output_example_1million.txt 
+	diff ./output/output_single_example_10million.txt ./output/output_example_10million.txt 
 	diff ./output/output_single_example_100million.txt ./output/output_example_100million.txt
 single:
 	g++ MSD.cpp -O2 -Wall -o MSD.exe 

@@ -9,7 +9,6 @@
 
 #define BILLION  1000000000L
 int arr_len;
-
 typedef std::vector<std::string> vec;
 vec a;
 void msd( int lo, int hi, unsigned int d){
@@ -24,7 +23,6 @@ void msd( int lo, int hi, unsigned int d){
 	if(hi <= lo + 1) return;
 	//printf("hi 0 \n");
 	for(int i=lo; i<hi; ++i){
-		//std::cout << a[i].length() <<" ";
 		if(static_cast<unsigned int>(a[i].length()) > d){
 			count[a[i][d] + 1]++;
 		} else count[0]++;
@@ -79,12 +77,14 @@ int main(int argc, char* argv[]){
 	int start_show = atoi(argv[3]);
 	int end_show = atoi(argv[4]);
     //printf("%s %d\n",argv[1],arr_len);
+	a.resize(arr_len+1);
 	std::string tmp;
 	a.clear();
 	for(int i=0; i<arr_len; ++i){
 		//inputfile.getline(array[i],20);
 		std::getline(inputfile,tmp);
-		a.push_back(std::move(tmp));
+		a.push_back(tmp);
+		//a.push_back(std::move(tmp));
 		//std::getline(inputfile,a[i]);
 	}
 	inputfile.close();
@@ -98,15 +98,14 @@ int main(int argc, char* argv[]){
 	clock_gettime(CLOCK_REALTIME, &stop);
 
 	//print out the result
-	printf("%d to %d\n",start_show,end_show);
-	for (vec::const_iterator i = a.begin(); i != a.end(); ++i){
-    	std::cout << *i << '\n';
-	}
-	/*
 	for(int i=start_show; i<=end_show; ++i){
 		std::cout << a[i] <<"\n";
 	}
-	*/
+/*
+	for(int i=start_show; i<=end_show; ++i){
+		std::cout << a[i] <<"\n";
+	}
+*/
     //std::cout << "\n";
 	std::cout << "Elapsed time: " << (stop.tv_sec - start.tv_sec) + ((double) (stop.tv_nsec - start.tv_nsec))/BILLION << " sec" << "\n";
 

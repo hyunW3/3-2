@@ -317,88 +317,102 @@ main_20201103_15:42:38.cpp __best
 > 
 > Elapsed time: 18.4136 sec
 ================================
-main_20201103_15:54:36.cpp
-159076c159076,159077
-< Elapsed time: 0.34428 sec
+main_20201105_11:46:18.cpp
+0a1
+> 0 to 159074
+159076c159077
+< Elapsed time: 0.479279 sec
 ---
-> 
-> Elapsed time: 0.0335596 sec
-10002c10002,10003
-< Elapsed time: 0.195042 sec
+> Elapsed time: 0.0774968 sec
+0a1
+> 0 to 10000
+10002c10003
+< Elapsed time: 0.165954 sec
 ---
-> 
-> Elapsed time: 0.0117431 sec
-466552c466552,466553
-< Elapsed time: 7.1041 sec
+> Elapsed time: 0.0143419 sec
+0a1
+> 0 to 466550
+466552c466553
+< Elapsed time: 7.31088 sec
 ---
-> 
-> Elapsed time: 0.412396 sec
-325241c325241,325242
-< Elapsed time: 0.0126093 sec
+> Elapsed time: 0.576915 sec
+0a1
+> 0 to 325239
+325241c325242
+< Elapsed time: 0.0187745 sec
 ---
-> 
-> Elapsed time: 0.0326737 sec
-1164970c1164970,1164971
-< Elapsed time: 2.06413 sec
+> Elapsed time: 0.0397053 sec
+0a1
+> 0 to 1164968
+1164970c1164971
+< Elapsed time: 2.59789 sec
 ---
-> 
-> Elapsed time: 0.225611 sec
-1000002c1000002,1000003
-< Elapsed time: 18.8548 sec
+> Elapsed time: 0.38233 sec
+0a1
+> 0 to 1000000
+1000002c1000003
+< Elapsed time: 19.1417 sec
 ---
-> 
-> Elapsed time: 0.938879 sec
-10000002c10000002,10000003
-< Elapsed time: 29.8516 sec
+> Elapsed time: 1.52095 sec
+0a1
+> 0 to 10000000
+10000002c10000003
+< Elapsed time: 31.5915 sec
 ---
-> 
-> Elapsed time: 3.00853 sec
-100000002c100000002,100000003
-< Elapsed time: 66.377 sec
+> Elapsed time: 4.17373 sec
+0a1
+> 0 to 100000000
+100000002c100000003
+< Elapsed time: 99.4151 sec
 ---
-> 
-> Elapsed time: 22.5219 sec
-
-
+> Elapsed time: 31.548 sec
 ================================
-main_20201105_01:41:24.cpp
-159076c159076,159077
-< Elapsed time: 1.07369 sec
+main_20201105_11:48:56.cpp
+0a1
+> 0 to 159074
+159076c159077
+< Elapsed time: 0.479279 sec
 ---
-> 
-> Elapsed time: 0.121507 sec
-10002c10002,10003
-< Elapsed time: 0.540709 sec
+> Elapsed time: 0.0537166 sec
+0a1
+> 0 to 10000
+10002c10003
+< Elapsed time: 0.165954 sec
 ---
-> 
-> Elapsed time: 0.0946722 sec
-466552c466552,466553
-< Elapsed time: 22.513 sec
+> Elapsed time: 0.0102097 sec
+0a1
+> 0 to 466550
+466552c466553
+< Elapsed time: 7.31088 sec
 ---
-> 
-> Elapsed time: 1.64072 sec
-325241c325241,325242
-< Elapsed time: 0.0118117 sec
+> Elapsed time: 0.510219 sec
+0a1
+> 0 to 325239
+325241c325242
+< Elapsed time: 0.0187745 sec
 ---
-> 
-> Elapsed time: 0.0883447 sec
-1164970c1164970,1164971
-< Elapsed time: 5.67871 sec
+> Elapsed time: 0.0557437 sec
+0a1
+> 0 to 1164968
+1164970c1164971
+< Elapsed time: 2.59789 sec
 ---
-> 
-> Elapsed time: 0.679346 sec
-1000002c1000002,1000003
-< Elapsed time: 60.7646 sec
+> Elapsed time: 0.497087 sec
+0a1
+> 0 to 1000000
+1000002c1000003
+< Elapsed time: 19.1417 sec
 ---
-> 
-> Elapsed time: 2.77372 sec
-10000002c10000002,10000003
-< Elapsed time: 94.8162 sec
+> Elapsed time: 1.34417 sec
+0a1
+> 0 to 10000000
+10000002c10000003
+< Elapsed time: 31.5915 sec
 ---
-> 
-> Elapsed time: 9.80217 sec
-100000002c100000002,100000003
-< Elapsed time: 200.298 sec
+> Elapsed time: 4.18781 sec
+0a1
+> 0 to 100000000
+100000002c100000003
+< Elapsed time: 99.4151 sec
 ---
-> 
-> Elapsed time: 52.0438 sec
+> Elapsed time: 33.854 sec

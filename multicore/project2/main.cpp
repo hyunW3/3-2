@@ -10,9 +10,10 @@
 
 #define BILLION  1000000000L
 int arr_len;
+int num_thread;
 typedef std::vector<std::string> vec;
 vec a;
-void msd( int lo, int hi, unsigned int d){
+void msd(int lo, int& hi, unsigned int d){
 	//std::string temp[hi-lo+1];
 	vec temp;
 	temp.resize(hi-lo+1);
@@ -21,8 +22,7 @@ void msd( int lo, int hi, unsigned int d){
 	int tmp;
 	int zeros =0;
 	if(hi <= lo + 1) return;
-	//https://stackoverflow.com/questions/20413995/reducing-on-array-in-openmp
-	#pragma omp parallel private(tmp) shared(count,zeros,temp)  //shared(a,lo,hi)
+	#pragma omp parallel private(tmp) shared(pos,count,zeros,temp)  //shared(a,lo,hi)
 	{
 	//#pragma omp for 
 	#pragma omp single
@@ -39,10 +39,12 @@ void msd( int lo, int hi, unsigned int d){
 	#pragma omp single
 	for(int k=1; k<256; ++k){
 		count[k] += count[k-1];
+	}
+	#pragma omp for 
+	for(int k=1; k<256; ++k){
 		pos[k] = count[k];
 	}
 	
-	//printf("\n");
 	#pragma omp single 
 	//#pragma omp for schedule(dynamic,1)
 	for(int i=lo; i<hi; ++i){
@@ -57,16 +59,37 @@ void msd( int lo, int hi, unsigned int d){
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);
+	int size = hi-lo;
 	#pragma omp for 
-	for(int i=0; i<hi-lo; ++i){
+	for(int i=0; i<size; ++i){
 		a[i+lo] = temp[i];
 	}
 	//#pragma omp for schedule(dynamic,4)
 	#pragma omp single // schedule(dynamic,4)
 	for(int i=2; i<255; ++i){
-		if( lo+pos[i] > lo+pos[i-1] + 1) {
+		int back = lo+pos[i];
+		int front = lo+pos[i-1];
+		if( back > front + 2) {
 			#pragma omp task 
-			msd(lo+pos[i-1],lo+pos[i],d+1);
+			msd(front,back,d+1);
+		} else if( back == front + 2){
+			#pragma omp task 
+			{
+			unsigned int d1 = d+1;
+			int index = front;
+			unsigned int len1 = a[index].length();
+			unsigned int len2 = a[index+1].length();
+			while( (len1 >= d1) && (len2 >= d1) ){
+				char tmp1 = (len1 > d1)?(a[index][d1]):(0);
+				char tmp2 = (len2 > d1)?(a[index+1][d1]):(0);
+				//printf("%d %d\n",tmp1,tmp2);
+				if(tmp1 > tmp2){
+					a[index].swap(a[index+1]);
+					break;
+				} else if((tmp1 == tmp2)) d1++;
+				else break;
+			}
+			}
 		}
 	}
 	} // end omp parallel
@@ -82,7 +105,7 @@ int main(int argc, char* argv[]){
     arr_len = atoi(argv[2]);
 	int start_show = atoi(argv[3]);
 	int end_show = atoi(argv[4]);
-	int num_thread = atoi(argv[5]);
+	num_thread = atoi(argv[5]);
     //printf("%s %d\n",argv[1],arr_len);
 	a.resize(arr_len+1);
 	omp_set_num_threads(num_thread);

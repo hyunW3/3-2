@@ -18,43 +18,47 @@ void msd(int lo, int& hi, unsigned int d){
 	vec temp;
 	temp.resize(hi-lo+1);
 	int count[256] = {0,};
+	int pos[256]={0,};
 	int tmp;
 	int zeros =0;
 	if(hi <= lo + 1) return;
-	#pragma omp parallel if(hi-lo>100000) private(tmp) shared(count,zeros,temp)  //shared(a,lo,hi)
+	#pragma omp parallel private(tmp) shared(pos,count,zeros,temp)  //shared(a,lo,hi)
 	{
-	#pragma omp for //if(d<2)
+	//#pragma omp for 
+	#pragma omp single
 	for(int i=lo; i<hi; ++i){
-		if(a[i].length() > d){
+		if(static_cast<unsigned int>(a[i].length()) > d){
 			//#pragma omp atomic
 			//count[a[i].at(d) + 1]++;
-			tmp = a[i][d];
-			#pragma omp atomic
-			count[tmp]++;
+			count[a[i][d] + 1]++;
 		} else {
-			#pragma omp atomic
+			//#pragma omp atomic
 			count[0]++;
 		}
 	}
-	}
+	#pragma omp single
 	for(int k=1; k<256; ++k){
 		count[k] += count[k-1];
 	}
+	#pragma omp for 
+	for(int k=1; k<256; ++k){
+		pos[k] = count[k];
+	}
+	
+	#pragma omp single 
 	//#pragma omp for schedule(dynamic,1)
 	for(int i=lo; i<hi; ++i){
-		if(a[i].length() > d){
+		if(static_cast<unsigned int>(a[i].length()) > d){
 			//tmp = a[i].at(d);
-			//tmp = a[i][d]-1;
-			temp[count[a[i][d]-1]++] = a[i];
-			//count[tmp]++;
+			tmp = a[i][d];
+			temp[count[tmp]] = a[i];
+			count[tmp]++;
 		} else {
-			temp[zeros++] = a[i];
-			//zeros++;
+			temp[zeros] = a[i];
+			zeros++;
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);
-	#pragma omp parallel shared(count,temp)  //shared(a,lo,hi)
-	{
 	int size = hi-lo;
 	#pragma omp for 
 	for(int i=0; i<size; ++i){
@@ -62,13 +66,31 @@ void msd(int lo, int& hi, unsigned int d){
 	}
 	//#pragma omp for schedule(dynamic,4)
 	#pragma omp single // schedule(dynamic,4)
-	for(int i=0; i<255; ++i){
-		int front = lo+count[i];
-		int back = lo+count[i+1];
-		if( back > front + 1) {
+	for(int i=2; i<255; ++i){
+		int back = lo+pos[i];
+		int front = lo+pos[i-1];
+		if( back > front + 2) {
 			#pragma omp task 
 			msd(front,back,d+1);
-		} 
+		} else if( back == front + 2){
+			#pragma omp task 
+			{
+			unsigned int d1 = d+1;
+			int index = front;
+			unsigned int len1 = a[index].length();
+			unsigned int len2 = a[index+1].length();
+			while( (len1 >= d1) && (len2 >= d1) ){
+				char tmp1 = (len1 > d1)?(a[index][d1]):(0);
+				char tmp2 = (len2 > d1)?(a[index+1][d1]):(0);
+				//printf("%d %d\n",tmp1,tmp2);
+				if(tmp1 > tmp2){
+					a[index].swap(a[index+1]);
+					break;
+				} else if((tmp1 == tmp2)) d1++;
+				else break;
+			}
+			}
+		}
 	}
 	} // end omp parallel
 }

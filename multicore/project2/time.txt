@@ -824,40 +824,111 @@ main_20201105_23:32:44.cpp
 ---
 > Elapsed time: 197.528 sec
 ================================
-main_20201105_23:41:14.cpp
+main_20201106_14:50:49.cpp
 159076c159076
 < Elapsed time: 0.144763 sec
 ---
-> Elapsed time: 0.0851999 sec
+> Elapsed time: 0.0817552 sec
 10002c10002
 < Elapsed time: 0.013142 sec
 ---
-> Elapsed time: 0.0156472 sec
+> Elapsed time: 0.0222211 sec
 466552c466552
 < Elapsed time: 0.589289 sec
 ---
-> Elapsed time: 0.616951 sec
+> Elapsed time: 0.691027 sec
 325241c325241
 < Elapsed time: 0.112373 sec
 ---
-> Elapsed time: 0.0835284 sec
+> Elapsed time: 0.0436967 sec
 1164970c1164970
 < Elapsed time: 0.908266 sec
 ---
-> Elapsed time: 0.395159 sec
+> Elapsed time: 0.382494 sec
 1000002c1000002
 < Elapsed time: 0.93834 sec
 ---
-> Elapsed time: 1.64516 sec
+> Elapsed time: 1.5306 sec
 10000002c10000002
 < Elapsed time: 11.3544 sec
 ---
-> Elapsed time: 4.24846 sec
+> Elapsed time: 3.65802 sec
 100000002c100000002
 < Elapsed time: 129.307 sec
 ---
-> Elapsed time: 30.1463 sec
+> Elapsed time: 32.7252 sec
 1000000002c1000000002
 < Elapsed time: 1041.59 sec
 ---
-> Elapsed time: 186.79 sec
+> Elapsed time: 176.283 sec
+================================
+main_20201106_15:00:43.cpp
+159076c159076
+< Elapsed time: 0.144763 sec
+---
+> Elapsed time: 0.0712885 sec
+10002c10002
+< Elapsed time: 0.013142 sec
+---
+> Elapsed time: 0.0270264 sec
+466552c466552
+< Elapsed time: 0.589289 sec
+---
+> Elapsed time: 0.332823 sec
+325241c325241
+< Elapsed time: 0.112373 sec
+---
+> Elapsed time: 0.0404829 sec
+1164970c1164970
+< Elapsed time: 0.908266 sec
+---
+> Elapsed time: 0.335006 sec
+1000002c1000002
+< Elapsed time: 0.93834 sec
+---
+> Elapsed time: 1.0396 sec
+10000002c10000002
+< Elapsed time: 11.3544 sec
+---
+> Elapsed time: 4.21419 sec
+100000002c100000002
+< Elapsed time: 129.307 sec
+---
+> Elapsed time: 32.6381 sec
+1000000002c1000000002
+< Elapsed time: 1041.59 sec
+---
+> Elapsed time: 178.135 sec
+
+10000002c10000002
+< Elapsed time: 11.3544 sec
+---
+> Elapsed time: 3.45299 sec
+100000002c100000002
+< Elapsed time: 129.307 sec
+---
+> Elapsed time: 29.3545 sec
+10000002c10000002
+< Elapsed time: 11.3544 sec
+---
+> Elapsed time: 3.68129 sec
+100000002c100000002
+< Elapsed time: 129.307 sec
+---
+> Elapsed time: 28.3251 sec
+10000002c10000002
+< Elapsed time: 11.3544 sec
+---
+> Elapsed time: 3.36215 sec
+100000002c100000002
+< Elapsed time: 129.307 sec
+---
+> Elapsed time: 28.2217 sec
+10000002c10000002
+< Elapsed time: 11.3544 sec
+---
+> Elapsed time: 3.36483 sec
+100000002c100000002
+< Elapsed time: 129.307 sec
+---
+> Elapsed time: 27.4624 sec

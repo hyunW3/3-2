@@ -1,0 +1,27 @@
+2$ ./MSD.exe w3.txt 231291 0 201291 16
+231291 정도에서 메모리가 넘친다.. segmentation fault
+problem in std::string??
+memory free?
+sol) 임시로 저장하기위한 std::string 배열에서 30만줄정도 넘어가는 input을 받을떄 메모리 할당이 바로 되는 건 아닌것같다.
+
+	//std::string temp[hi-lo+1];에서 
+
+	vec temp;
+	temp.resize(hi-lo+1);
+	로 변경하였더니 별문제없이 해결
+
+
+diff output_single.txt output.txt | tee time.txt
+159076c159076,159077
+< Elapsed time: 0.0658705 sec
+---
+>
+> Elapsed time: 0.0612304 sec
+> Elapsed time: 0.0652031 sec
+diff output_single_wordlist.10000.txt output_wordlist.10000.txt | tee -a time.txt
+10002c10002,10003
+< Elapsed time: 0.016623 sec
+---
+>
+> Elapsed time: 0.0321952 sec
+> Elapsed time: 0.0375641 sec

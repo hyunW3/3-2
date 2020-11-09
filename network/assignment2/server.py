@@ -42,8 +42,18 @@ def time_cal(id_compare):
             return str(30 - diff)
     return " "
     
-def serv_work(client_socket, addr):
-    data = client_socket.recv(65535)
+def serv_work(client_socket, addr):             
+    try:
+        data = client_socket.recv(65535)   
+    except ConnectionResetError:
+        client_socket.close()
+        client_socket, addr = serverSocket.accept()
+    except ConnectionAbortedError:
+        client_socket.close()
+        client_socket, addr = serverSocket.accept()
+    except KeyboardInterrupt as e:
+        client_socket.close()
+        return
     if len(data) < 1 :
         return
     request_data = data.decode().split()
@@ -58,6 +68,7 @@ def serv_work(client_socket, addr):
             if os.path.exists("./index.html"):
                 page = open("./index.html","r")
                 page_data = page.read()
+                page.close()
                 response_data += cookie_clear()
                 #response_data += "Content-Length: %d\r\n" % len(page_data) # this doesn't work
                 response_data += "Content-Type: text/html;charset=UTF-8\r\n\r\n"
@@ -73,6 +84,7 @@ def serv_work(client_socket, addr):
                 client_socket.sendall(response_403.encode())
             page = open("./cookie.html","r")
             page_data = page.read()
+            page.close()
             page_data = page_data.replace("$ID",request_id)
             diff = time_cal(request_id)
             page_data = page_data.replace("$TIME",diff)
@@ -90,17 +102,16 @@ def serv_work(client_socket, addr):
             file_loc = "."+request_loc
             #print(file_loc[-3:])
             # should check privileged to access it
+            request_id = request_data[-2][3:-1]
+            request_pw = request_data[-1][9:]
+            if Login_info(request_id,request_pw) == False :
+                client_socket.sendall(response_403.encode())
+                return
             if os.path.exists(file_loc) :
-                request_id = request_data[-2][3:-1]
-                request_pw = request_data[-1][9:]
-                if Login_info(request_id,request_pw) == False :
-                    #if "index" not in file_loc:
-                        #print(file_loc)
-                    client_socket.sendall(response_403.encode())
-                    return
                 response_data = response_202 + "Date: {0}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
                 item = open(file_loc,"rb")
                 item_data = item.read()
+                item.close()
                 response_data += "Content-Length: {0}\r\n".format(len(item_data))
                 if file_loc[-3:] in "jpg/jpeg/png/JPG" :
                     response_data += "Content-Type: image/jpeg\r\n\r\n" 
@@ -129,6 +140,7 @@ def serv_work(client_socket, addr):
         file_loc = "."+request_loc
         page = open(file_loc,"r")
         page_data = page.read()
+        page.close()
         response_data = response_202 + "Date: {0}\r\n".format(datetime.now().strftime('%a, %d %b %Y %H:%M:%S KST'))
         response_data += cookie_setting(request_id,request_pw)
         expire_table[request_id] = datetime.now()

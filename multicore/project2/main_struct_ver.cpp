@@ -28,7 +28,7 @@ void msd( int lo, int hi, unsigned int d){
 	int zeros =0;
 	if(hi <= lo + 1) return;
 	//https://stackoverflow.com/questions/20413995/reducing-on-array-in-openmp
-	#pragma omp parallel private(tmp) shared(count,zeros,temp)  //shared(a,lo,hi)
+	#pragma omp parallel private(tmp) shared(pos,count,zeros,temp)  //shared(a,lo,hi)
 	{
 	//#pragma omp for 
 	#pragma omp single
@@ -44,13 +44,16 @@ void msd( int lo, int hi, unsigned int d){
 			count[0].val++;
 		}
 	}
+	
 	#pragma omp single
 	for(int k=1; k<256; ++k){
-		//count[k] += count[k-1];
-		count[k].val += count[k-1].val;
+		if(count[k-1] != 0) count[k].val += count[k-1].val;
+	}
+	#pragma omp for 
+	for(int k=1; k<256; ++k){
 		pos[k].val = count[k].val;
 	}
-	//printf("\n");
+	
 	#pragma omp single 
 	//#pragma omp for schedule(dynamic,1)
 	for(int i=lo; i<hi; ++i){
@@ -59,16 +62,15 @@ void msd( int lo, int hi, unsigned int d){
 			tmp = a[i][d];
 			temp[count[tmp].val] = a[i];
 			count[tmp].val++;
-			//count[tmp]++;
-			//temp[count[tmp]] = a[i];
 		} else {
 			temp[zeros] = a[i];
 			zeros++;
 		}
 	}
 //	printf("%d to %d\n",lo,hi-1);
+	int size = hi-lo;
 	#pragma omp for 
-	for(int i=0; i<hi-lo; ++i){
+	for(int i=0; i<size; ++i){
 		a[i+lo] = temp[i];
 	}
 	//#pragma omp for schedule(dynamic,4)
@@ -114,7 +116,6 @@ int main(int argc, char* argv[]){
 	clock_gettime(CLOCK_REALTIME, &stop);
 
 	//print out the result
-	printf("%d to %d\n",start_show,end_show);
 	for(int i=start_show; i<=end_show; ++i){
 		std::cout << a[i] <<"\n";
 	}

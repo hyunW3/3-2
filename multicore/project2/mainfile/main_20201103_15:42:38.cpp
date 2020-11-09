@@ -44,7 +44,6 @@ void msd( int lo, int hi, unsigned int d){
 	for(int k=1; k<256; ++k){
 		pos[k] = count[k];
 	}
-	//printf("\n");
 	#pragma omp single 
 	//#pragma omp for schedule(dynamic,1)
 	for(int i=lo; i<hi; ++i){
@@ -106,7 +105,6 @@ int main(int argc, char* argv[]){
 	clock_gettime(CLOCK_REALTIME, &stop);
 
 	//print out the result
-	printf("%d to %d\n",start_show,end_show);
 	for(int i=start_show; i<=end_show; ++i){
 		std::cout << a[i] <<"\n";
 	}

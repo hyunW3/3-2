@@ -1,0 +1,4 @@
+swin.skku.edu
+swui.skku.edu
+swye.skku.edu
+swji.skku.edu

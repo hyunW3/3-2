@@ -2,3 +2,6 @@
 //  MPI_Recv(void* buf,int count, MPI_Datatype datatype, int source, int tag, MPI_comm comm, MPI_Status *status)
 //  count : # of items to transfer
 //  tags allow programer to deal with the arrivals of messages in an orderly manner
+
+MPI_Cart_create(MPI_COMM_WORLD,ndims,dimsize,periods,reorder, &newcomm);
+-> process to 0,1,2,3 -> 0,0 / 0,1 / 1,0 / 1,1

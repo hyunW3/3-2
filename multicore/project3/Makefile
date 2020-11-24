@@ -3,7 +3,10 @@
 main:
 	mpiCC -g -Wall -o mpi_main main.cpp
 test:
-	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/input1.txt 3 15 15
+	mpiexec --machinefile hosts.txt -n 2 -map-by node ./mpi_main ./input_file/input1.txt 3 15 15
+	#mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/input2.txt 100 100 100
+	#mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/input3.txt 50 512 512
+	#mpiexec --machinefile hosts.txt -n 16 ./mpi_main ./input_file/input4.txt 200 2048 2048
 run :
 	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/input1.txt 3 15 15
 	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/input2.txt 100 100 100

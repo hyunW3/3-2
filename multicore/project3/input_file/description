@@ -6,3 +6,6 @@ input1 : 15 3 2
 input2 : 100 100 2
 input3 : 512 50 2
 input4 : 2048 200 16
+
+
+# : alive, . : dead

@@ -49,7 +49,12 @@ Game of Life offers a really high potential for scalability. Measuring the MPI's
 ![img not found](graphs/speedup_efficiency.png)
 
 
-
-
+ex)
+mpiexec -n 16 --machinefile ../machines -map-by node ./gameoflife -n 100 -m 100 -max 10 -f ../inputfile
+No change on 3 generation
+Elapsed time    : 0.692 seconds
+mpiexec -n 16 --machinefile ../machines ./gameoflife -n 100 -m 100 -max 10 -f ../inputfile
+No change on 5 generation
+Elapsed time    : 0.543 seconds
 
 

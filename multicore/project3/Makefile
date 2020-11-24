@@ -1,5 +1,9 @@
 main:
-	mpic++ -g -Wall -o mpi_main test.cpp
+	mpiCC -g -Wall -o mpi_main test.cpp
+run :
+	mpiexec --machinefile hosts.txt -n 4 ./mpi_main
+single:
+	mpiexec --machinefile hosts.txt -n 16 -map-by node ./mpi_main
 titan1:
 	ssh titan1 
 titan2:

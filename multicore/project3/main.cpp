@@ -8,6 +8,7 @@
 char** cell; // 0~X_limit-1 * 0~Y_limit-1
 int X_limit,Y_limit;
 int** alive_map;
+int** local_alive_map;
 int get_num_alive(int x_pos,int y_pos);
 int main(int argc, char *argv[]){
     int size,rank,num_Gen;
@@ -28,9 +29,11 @@ int main(int argc, char *argv[]){
     Y_limit = atoi(argv[4]);
     cell = (char**)calloc(Y_limit,sizeof(char*));
     alive_map = (int**)calloc(Y_limit,sizeof(int*));
+    local_alive_map = (int**)calloc(Y_limit,sizeof(int*));
     for(int i=0; i<Y_limit; i++){
         cell[i] = (char*)calloc(X_limit+2,sizeof(char));
         alive_map[i] = (int*)calloc(X_limit,sizeof(int));
+        local_alive_map[i] = (int*)calloc(X_limit,sizeof(int));
     }
 //    printf("rank(%d) - %s %d %d %d\n",rank,filename,num_Gen,X_limit,Y_limit);
 ///  get input
@@ -57,12 +60,14 @@ int main(int argc, char *argv[]){
             for(int j=0; j<X_limit; j++){ // i,j
                 // get pos and cal alive or dead neigherhood
                 if((i*X_limit+j)%size == rank){
-                    alive_map[i][j] = get_num_alive(i,j);
+                    local_alive_map[i][j] = get_num_alive(i,j);
                     //printf("%d",alive_map[i][j]);
                 }
                 //int n_alive = get_num_alive(i,j);
             }
         }
+        // reduce to one main alive_map
+        MPI_Allreduce(&local_alive_map,&alive_map,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
         if (rank == 1){ // for test
         for(int i=0; i<Y_limit; i++){
             for(int j=0; j<X_limit; j++){ // i,j

@@ -9,3 +9,11 @@ MPI_Cart_create(MPI_COMM_WORLD,ndims,dimsize,periods,reorder, &newcomm);
 int MPI_Allreduce(void *sendbuf, void *recvbuf, int
 count, MPI_Datatype datatype, MPI_Op op, MPI_Comm
 comm)
+
+
+	int a[Y_limit]={0,};
+	int b[Y_limit]={0,};
+MPI_Allreduce(&a,&b,Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
+
+
+MPI_Barrier(MPI_COMM_WORLD);

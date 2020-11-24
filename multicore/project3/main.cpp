@@ -56,18 +56,21 @@ int main(int argc, char *argv[]){
     //for num of Gen
     
     //for(int g=0; g<num_Gen; g++){
-        for(int i=0; i<Y_limit; i++){
-            for(int j=0; j<X_limit; j++){ // i,j
+    for(int i=0; i<Y_limit; i++){
+        if((i% size) == rank) a[i] = rank;        
+	    for(int j=0; j<X_limit; j++){ // i,j
                 // get pos and cal alive or dead neigherhood
                 if((i*X_limit+j)%size == rank){
                     local_alive_map[i][j] = get_num_alive(i,j);
+                //    alive_map[i][j] = get_num_alive(i,j);
                     //printf("%d",alive_map[i][j]);
                 }
                 //int n_alive = get_num_alive(i,j);
             }
         }
         // reduce to one main alive_map
-        MPI_Allreduce(&local_alive_map,&alive_map,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
+    //
+	MPI_Allreduce((void*)&local_alive_map,(void*)&alive_map,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
         if (rank == 1){ // for test
         for(int i=0; i<Y_limit; i++){
             for(int j=0; j<X_limit; j++){ // i,j

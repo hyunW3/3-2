@@ -14,6 +14,8 @@ comm)
 	int a[Y_limit]={0,};
 	int b[Y_limit]={0,};
 MPI_Allreduce(&a,&b,Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
-
-
+int MPI_Reduce(const void *sendbuf, void *recvbuf, int count,
+               MPI_Datatype datatype, MPI_Op op, int root,
+               MPI_Comm comm)
+--> malloc array doesn't allow reduce method
 MPI_Barrier(MPI_COMM_WORLD);

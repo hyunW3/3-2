@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
     //int* alive_map = (int*)calloc(Y_limit*X_limit,sizeof(int)); // row * column : X_limit * Y_limit
     //int* local_alive_map = (int*)calloc(Y_limit*X_limit,sizeof(int));
     int alive_map[X_limit*Y_limit]={0,};
-    int local_alive_map[X_limit*Y_limit]={0,};
+    //int local_alive_map[X_limit*Y_limit]={0,};
     for(int i=0; i<Y_limit; i++){
         cell[i] = (char*)calloc(X_limit+2,sizeof(char));
     }
@@ -43,7 +43,10 @@ int main(int argc, char *argv[]){
         fgets(cell[y],X_limit+2,f);
         cell[y][X_limit] = '\0';
     }
-    int* i_cell = (int*)calloc(X_limit*Y_limit,sizeof(int));
+    //int* i_cell = (int*)calloc(X_limit*Y_limit,sizeof(int));
+    int i_cell[X_limit*Y_limit]={0,};
+    int tmp_i_cell[X_limit*Y_limit]={0,};
+    //int* tmp_i_cell = (int*)calloc(X_limit*Y_limit,sizeof(int));
     // conversion for  reduction process
     for(int i=0; i<Y_limit; i++){
 	    for(int j=0; j<X_limit; j++){ 
@@ -69,22 +72,23 @@ int main(int argc, char *argv[]){
     free(cell);
 /// serial version 
     //for num of Gen
-    int tmp_i_cell[X_limit*Y_limit]={0,};
     //memcpy(tmp_i_cell,i_cell,X_limit*Y_limit);
-    //for(int g=0; g<num_Gen; g++){
+    for(int g=0; g<num_Gen; g++){
         for(int i=0; i<Y_limit; i++){
 	        for(int j=0; j<X_limit; j++){ // i,j
                 // get pos and cal alive or dead neigherhood
                 int index = i*X_limit+j;
                 if((index)%size == rank){
-                    local_alive_map[index] = get_num_alive(i_cell,i,j);
+                    alive_map[index] = get_num_alive(i_cell,i,j);
+                    // local_alive_map
                 }
             }
         }
         // reduce to one main alive_map
     // i think it is no need to all reduce
-	    MPI_Allreduce((void*)&local_alive_map,(void*)&alive_map,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
+	    //MPI_Al`lreduce((void*)&local_alive_map,(void*)&alive_map,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
     // for test
+/*
         if (rank == 1){ // for test
         for(int i=0; i<Y_limit; i++){
             for(int j=0; j<X_limit; j++){ // i,j
@@ -93,17 +97,17 @@ int main(int argc, char *argv[]){
             printf("\n");
         }
         } // end if rank 1
-
+*/
         for(int i=0; i<Y_limit; i++){
             for(int j=0; j<X_limit; j++){
                 int index = i*X_limit+j;
-                if((index)%size == rank){ // MPI Divde
-                    if(i_cell[index] == 0){  // dead
+                if(index%size == rank){ // MPI Divde
+                    if(i_cell[index] == DEAD){  // dead
                         if(alive_map[index] != 3){ 
                         // next gen dead
                             //tmp_i_cell[index] = DEAD;
                             tmp_i_cell[index] = DEAD;
-                        } else tmp_i_cell[index] =ALIVE;
+                        } else tmp_i_cell[index] = ALIVE;
                         //tmp_i_cell[index] =ALIVE;
                     } else {  // alive
                         if((alive_map[index] <2 )||(alive_map[index] >3)){
@@ -113,10 +117,11 @@ int main(int argc, char *argv[]){
                         } else tmp_i_cell[index] = ALIVE;
                         //tmp_i_cell[index] = ALIVE;
                     }
-                }
+                } // end if((index)%size == rank)
             }
         }
         MPI_Allreduce((void*)&tmp_i_cell,(void*)&i_cell,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
+
         if(rank == 0){
             for(int i=0; i<Y_limit; i++){
                 for(int j=0; j<X_limit; j++){
@@ -124,10 +129,10 @@ int main(int argc, char *argv[]){
                 }
                 printf("\n");
             }
+            printf("==================\n");
         }
-        printf("==================\n");
     //} // end if (rank ==0)
-    //} //end for(int g=0; g<num_Gen)
+    } //end for(int g=0; g<num_Gen)
     
 /// finish program
     free(filename);

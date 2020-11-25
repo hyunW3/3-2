@@ -100,14 +100,16 @@ int get_num_alive(int x_pos,int y_pos){
     int idx_x,idx_y;
     for(int i=0; i<3; i++){
         for(int j=0; j<3; j++){
-            if(dx[i] == 0 && dy[i] == 0) continue;
             idx_x = x_pos+dx[i];
             idx_y = y_pos+dy[j];
+            if(idx_x == x_pos && idx_y == y_pos) continue;
             if(idx_x <0 || idx_x >=X_limit) continue;
             if(idx_y <0 || idx_y >=Y_limit) continue;
-            char a = cell[idx_x][idx_y];
-            if(a=='#'){ // alive
+            if(cell[idx_x][idx_y]=='#'){ // alive
                 count +=1;
+            }
+            if(x_pos == 1 && y_pos == 4){
+                printf("%d %d - %d %c\n",idx_x,idx_y,count,cell[idx_x][idx_y]);
             }
         }
     }

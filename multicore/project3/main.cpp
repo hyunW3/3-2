@@ -46,6 +46,7 @@ int main(int argc, char *argv[]){
     //int* i_cell = (int*)calloc(X_limit*Y_limit,sizeof(int));
     int i_cell[X_limit*Y_limit]={0,};
     int tmp_i_cell[X_limit*Y_limit]={0,};
+    memset(tmp_i_cell,0,X_limit*Y_limit);
     //int* tmp_i_cell = (int*)calloc(X_limit*Y_limit,sizeof(int));
     // conversion for  reduction process
     for(int i=0; i<Y_limit; i++){
@@ -102,30 +103,23 @@ int main(int argc, char *argv[]){
             for(int j=0; j<X_limit; j++){
                 int index = i*X_limit+j;
                 if(index%size == rank){ // MPI Divde
-                    if(i_cell[index] == DEAD){  // dead
-                        if(alive_map[index] != 3){ 
-                        // next gen dead
-                            //tmp_i_cell[index] = DEAD;
-                            tmp_i_cell[index] = DEAD;
-                        } else tmp_i_cell[index] = ALIVE;
-                        //tmp_i_cell[index] =ALIVE;
-                    } else {  // alive
-                        if((alive_map[index] <2 )||(alive_map[index] >3)){
-                        // next gen dead 0~1 and 4~8 case when cell alive
-                            //tmp_i_cell[index] = DEAD;
-                            tmp_i_cell[index] = DEAD;
-                        } else tmp_i_cell[index] = ALIVE;
-                        //tmp_i_cell[index] = ALIVE;
+                    if((i_cell[index]==ALIVE) && alive_map[index] ==2){
+                        tmp_i_cell[index] = ALIVE;
+                    } else if(alive_map[index] ==3){
+                        tmp_i_cell[index] = ALIVE;
+                    } else {    
+                        tmp_i_cell[index] = DEAD;
                     }
                 } // end if((index)%size == rank)
             }
         }
         MPI_Allreduce((void*)&tmp_i_cell,(void*)&i_cell,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
-
         if(rank == 0){
             for(int i=0; i<Y_limit; i++){
                 for(int j=0; j<X_limit; j++){
-                    printf("%d",i_cell[i*X_limit+j]);
+                    if(i_cell[i*X_limit+j] == DEAD){
+                        printf(".");
+                    }else printf("#");
                 }
                 printf("\n");
             }
@@ -148,13 +142,12 @@ int get_num_alive(int* i_cell,int x_pos,int y_pos){
     int idx_x,idx_y;
     for(int i=0; i<3; i++){
         for(int j=0; j<3; j++){
-            if(dx[i] == 0 && dy[i] == 0) continue;
             idx_x = x_pos+dx[i];
             idx_y = y_pos+dy[j];
+            if(idx_x == x_pos && idx_y == y_pos) continue;
             if(idx_x <0 || idx_x >=X_limit) continue;
             if(idx_y <0 || idx_y >=Y_limit) continue;
-            int a = i_cell[idx_x*X_limit+idx_y];
-            if(a==ALIVE){ // alive
+            if(i_cell[idx_x*X_limit+idx_y]==ALIVE){ // alive
                 count +=1;
             }
         }

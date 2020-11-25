@@ -2,6 +2,8 @@
 # ./project3 inputfile.txt Num_of_Gens X_limit Y_limit 
 main:
 	mpiCC -g -Wall -o mpi_main main.cpp
+serial:
+	mpiCC -g -Wall -o mpi_main ./tmp/main_serial.cpp
 test:
 	mpiexec --machinefile hosts.txt -n 2 -map-by node ./mpi_main ./input_file/input1.txt 3 15 15
 	#mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/input2.txt 100 100 100

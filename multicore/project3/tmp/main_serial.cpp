@@ -108,9 +108,11 @@ int get_num_alive(int x_pos,int y_pos){
             if(cell[idx_x][idx_y]=='#'){ // alive
                 count +=1;
             }
+            /*
             if(x_pos == 1 && y_pos == 4){
                 printf("%d %d - %d %c\n",idx_x,idx_y,count,cell[idx_x][idx_y]);
             }
+            */
         }
     }
     return count;

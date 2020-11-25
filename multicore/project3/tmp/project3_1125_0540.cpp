@@ -8,7 +8,7 @@
 #define DEAD 0
 
 int X_limit,Y_limit;
-int get_num_alive(char* i_cell,int x_pos,int y_pos);
+int get_num_alive(int* i_cell,int x_pos,int y_pos);
 int main(int argc, char *argv[]){
     int size,rank,num_Gen;
     double local_start,local_finish,local_elapsed,elapsed;
@@ -27,10 +27,12 @@ int main(int argc, char *argv[]){
     X_limit = atoi(argv[3]);
     Y_limit = atoi(argv[4]);
     //int* alive_map = (int*)calloc(Y_limit*X_limit,sizeof(int)); // row * column : X_limit * Y_limit
-    char alive_map[X_limit*Y_limit]={0,};
-    char i_cell[X_limit*Y_limit]={0,}; // 0~X_limit-1 * 0~Y_limit-1
+    int alive_map[X_limit*Y_limit]={0,};
+    int i_cell[X_limit*Y_limit]={0,}; // 0~X_limit-1 * 0~Y_limit-1
+    int tmp_i_cell[X_limit*Y_limit]={0,};
 
-    memset(i_cell,0,X_limit*Y_limit*sizeof(char));
+    memset(i_cell,0,X_limit*Y_limit*sizeof(int));
+    memset(tmp_i_cell,0,X_limit*Y_limit*sizeof(int));
 //    printf("rank(%d) - %s %d %d %d\n",rank,argv[1],num_Gen,X_limit,Y_limit);
 ///  get input
     //FILE* f = fopen(filename,"r");
@@ -44,6 +46,21 @@ int main(int argc, char *argv[]){
     }
     fclose(f);
     
+/// for test whether input get well
+/*
+    if (rank == 0){ // for test whether input get well
+        for(int i=0; i<Y_limit; i++){
+	        for(int j=0; j<X_limit; j++){ // i,j
+                if(i_cell[i*X_limit+j] == DEAD){
+                    printf(".");
+                }else printf("#");
+                //printf("%d",i_cell[i*X_limit+j]); // for test whether input get well
+            }
+            printf("\n");
+        }
+        printf("==================\n");
+    }
+*/
 
 
 /// serial version 
@@ -54,30 +71,37 @@ int main(int argc, char *argv[]){
 	        for(int j=0; j<X_limit; j++){ // i,j
                 // get pos and cal alive or dead neigherhood
                 int index = i*X_limit+j;
-                alive_map[index] = get_num_alive(i_cell,i,j);
-                // local_alive_map
+                if((index)%size == rank){
+                    alive_map[index] = get_num_alive(i_cell,i,j);
+                    // local_alive_map
+                }
             }
         }
         for(int i=0; i<Y_limit; i++){
             for(int j=0; j<X_limit; j++){
                 int index = i*X_limit+j;
+                if(index%size == rank){ // MPI Divde
                     if((i_cell[index]==ALIVE) && alive_map[index] ==2){
-                        i_cell[index] = ALIVE;
+                        tmp_i_cell[index] = ALIVE;
                     } else if(alive_map[index] ==3){
-                        i_cell[index] = ALIVE;
+                        tmp_i_cell[index] = ALIVE;
                     } else {    
-                        i_cell[index] = DEAD;
+                        tmp_i_cell[index] = DEAD;
                     }
+                } // end if((index)%size == rank)
             }
         }
+        if (g != num_Gen-1){
+            MPI_Allreduce((void*)&tmp_i_cell,(void*)&i_cell,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
+        } else {
             // print cell location
             for(int i=0; i<Y_limit; i++){
                 for(int j=0; j<X_limit; j++){
-                    if(i_cell[i*X_limit+j] == ALIVE){
+                    if(tmp_i_cell[i*X_limit+j] == ALIVE){
                         printf("%d %d\n",i,j);
                     }
                 }
-            
+            }
         }
 /*        
         if(rank == 0){
@@ -96,17 +120,19 @@ int main(int argc, char *argv[]){
     
 	local_finish = MPI_Wtime();
 	local_elapsed = local_finish - local_start;
+	MPI_Reduce(&local_elapsed,&elapsed,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+
 
 	//if(!rank)   printf("Elapsed time    : %.3f seconds\n\n",elapsed);
 
 /// finish program
     
     MPI_Finalize();
-    printf("Elapsed time    : %.3f seconds\n\n",local_elapsed);
+    if(!rank) printf("Elapsed time    : %.3f seconds\n\n",elapsed);
     return 0;
 }
 
-int get_num_alive(char* i_cell,int x_pos,int y_pos){
+int get_num_alive(int* i_cell,int x_pos,int y_pos){
     int dx[3] = {-1,0,1};
     int dy[3] = {-1,0,1};
     int count =0;

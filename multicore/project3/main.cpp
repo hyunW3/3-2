@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
 
     memset(i_cell,0,X_limit*Y_limit*sizeof(int));
     memset(tmp_i_cell,0,X_limit*Y_limit*sizeof(int));
-    printf("rank(%d) - %s %d %d %d\n",rank,argv[1],num_Gen,X_limit,Y_limit);
+//    printf("rank(%d) - %s %d %d %d\n",rank,argv[1],num_Gen,X_limit,Y_limit);
 ///  get input
     //FILE* f = fopen(filename,"r");
     FILE* f = fopen(argv[1],"r");
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
     fclose(f);
     
 /// for test whether input get well
-
+/*
     if (rank == 0){ // for test whether input get well
         for(int i=0; i<Y_limit; i++){
 	        for(int j=0; j<X_limit; j++){ // i,j
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
         }
         printf("==================\n");
     }
-
+*/
 
 
 /// serial version 
@@ -91,8 +91,19 @@ int main(int argc, char *argv[]){
                 } // end if((index)%size == rank)
             }
         }
-        MPI_Allreduce((void*)&tmp_i_cell,(void*)&i_cell,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
-        
+        if (g != num_Gen-1){
+            MPI_Allreduce((void*)&tmp_i_cell,(void*)&i_cell,X_limit*Y_limit,MPI_INT,MPI_SUM,MPI_COMM_WORLD);
+        } else {
+            // print cell location
+            for(int i=0; i<Y_limit; i++){
+                for(int j=0; j<X_limit; j++){
+                    if(tmp_i_cell[i*X_limit+j] == ALIVE){
+                        printf("%d %d\n",i,j);
+                    }
+                }
+            }
+        }
+/*        
         if(rank == 0){
             for(int i=0; i<Y_limit; i++){
                 for(int j=0; j<X_limit; j++){
@@ -104,8 +115,7 @@ int main(int argc, char *argv[]){
             }
             printf("==================\n");
         }
-        
-        
+*/  
     } //end for(int g=0; g<num_Gen)
     
 	local_finish = MPI_Wtime();
@@ -113,11 +123,12 @@ int main(int argc, char *argv[]){
 	MPI_Reduce(&local_elapsed,&elapsed,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
 
 
-	if(!rank)   printf("Elapsed time    : %.3f seconds\n\n",elapsed);
+	//if(!rank)   printf("Elapsed time    : %.3f seconds\n\n",elapsed);
 
 /// finish program
     
     MPI_Finalize();
+    if(!rank) printf("Elapsed time    : %.3f seconds\n\n",elapsed);
     return 0;
 }
 

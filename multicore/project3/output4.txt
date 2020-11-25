@@ -1,0 +1,3 @@
+--------------------------------------------------------------------------
+mpiexec noticed that process rank 8 with PID 0 on node titan1 exited on signal 11 (Segmentation fault).
+--------------------------------------------------------------------------

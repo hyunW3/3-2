@@ -12,9 +12,12 @@ int get_num_alive(int* i_cell,int x_pos,int y_pos);
 int main(int argc, char *argv[]){
     int size,rank,num_Gen;
     char* filename;
+    double local_start,local_finish,local_elapsed,elapsed;
     MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+    local_start = MPI_Wtime();
 ///  get argument
     if(argc != 5){
         perror("exit:wrong parameter number\n");
@@ -128,6 +131,13 @@ int main(int argc, char *argv[]){
     //} // end if (rank ==0)
     } //end for(int g=0; g<num_Gen)
     
+	local_finish = MPI_Wtime();
+	local_elapsed = local_finish - local_start;
+	MPI_Reduce(&local_elapsed,&elapsed,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+
+
+	if(!rank)
+		printf("Elapsed time    : %.3f seconds\n\n",elapsed);
 /// finish program
     free(filename);
     

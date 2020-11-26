@@ -11,12 +11,10 @@ int X_limit,Y_limit;
 char get_num_alive(bool* i_cell,int x_pos,int y_pos);
 int main(int argc, char *argv[]){
     int size,rank,num_Gen;
-    double local_start,local_finish,local_elapsed,elapsed;
     MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-    local_start = MPI_Wtime();
 ///  get argument
     if(argc != 5){
         perror("exit:wrong parameter number\n");
@@ -26,9 +24,6 @@ int main(int argc, char *argv[]){
     num_Gen = atoi(argv[2]);
     X_limit = atoi(argv[3]);
     Y_limit = atoi(argv[4]);
-    //char alive_map[X_limit*Y_limit]={0,};
-    //bool i_cell[X_limit*Y_limit]={0,}; // 0~X_limit-1 * 0~Y_limit-1
-    //bool tmp_i_cell[X_limit*Y_limit]={0,};
 
     char* alive_map = new char[X_limit*Y_limit];
     bool* i_cell = new bool[X_limit*Y_limit];
@@ -36,7 +31,6 @@ int main(int argc, char *argv[]){
     memset(alive_map,0,X_limit*Y_limit*sizeof(char));
     memset(i_cell,0,X_limit*Y_limit*sizeof(bool));
     memset(tmp_i_cell,0,X_limit*Y_limit*sizeof(bool));
-//    printf("rank(%d) - %s %d %d %d\n",rank,argv[1],num_Gen,X_limit,Y_limit);
 ///  get input
     //FILE* f = fopen(filename,"r");
     FILE* f = fopen(argv[1],"r");
@@ -49,26 +43,8 @@ int main(int argc, char *argv[]){
     }
     fclose(f);
     
-/// for test whether input get well
-/*
-    if (rank == 0){ // for test whether input get well
-        for(int i=0; i<Y_limit; i++){
-	        for(int j=0; j<X_limit; j++){ // i,j
-                if(i_cell[i*X_limit+j] == DEAD){
-                    printf(".");
-                }else printf("#");
-                //printf("%d",i_cell[i*X_limit+j]); // for test whether input get well
-            }
-            printf("\n");
-        }
-        printf("==================\n");
-    }
-*/
-
-
 /// parallel version 
     //for num of Gen
-    
     for(int g=0; g<num_Gen; g++){
         for(int i=0; i<X_limit; i++){
 	        for(int j=0; j<Y_limit; j++){ // i,j
@@ -106,32 +82,10 @@ int main(int argc, char *argv[]){
                 }
             }
         }
-/*        
-        if(rank == 0){
-            for(int i=0; i<X_limit; i++){
-                for(int j=0; j<Y_limit; j++){
-                    if(i_cell[i*Y_limit+j] == DEAD){
-                        printf(".");
-                    }else printf("#");
-                }
-                printf("\n");
-            }
-            printf("==================\n");
-        }
-*/  
     } //end for(int g=0; g<num_Gen)
-    
-	local_finish = MPI_Wtime();
-	local_elapsed = local_finish - local_start;
-	MPI_Reduce(&local_elapsed,&elapsed,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
-
-
-	//if(!rank)   printf("Elapsed time    : %.3f seconds\n\n",elapsed);
-
 /// finish program
     
     MPI_Finalize();
-    if(!rank) printf("Elapsed time    : %.3f seconds\n\n",elapsed);
     return 0;
 }
 

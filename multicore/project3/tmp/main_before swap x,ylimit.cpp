@@ -3,7 +3,7 @@
 #include <iostream>
 #include <mpi.h>
 #include <unistd.h>
-#include <string.h>
+#include <cstring>
 #define ALIVE true
 #define DEAD false
 
@@ -26,16 +26,18 @@ int main(int argc, char *argv[]){
     num_Gen = atoi(argv[2]);
     X_limit = atoi(argv[3]);
     Y_limit = atoi(argv[4]);
+    //int* alive_map = (int*)calloc(Y_limit*X_limit,sizeof(int)); // row * column : X_limit * Y_limit
+    printf("hi\n");
     //char alive_map[X_limit*Y_limit]={0,};
-    //bool i_cell[X_limit*Y_limit]={0,}; // 0~X_limit-1 * 0~Y_limit-1
-    //bool tmp_i_cell[X_limit*Y_limit]={0,};
-
     char* alive_map = new char[X_limit*Y_limit];
-    bool* i_cell = new bool[X_limit*Y_limit];
-    bool* tmp_i_cell = new bool[X_limit*Y_limit];
+    bool i_cell[X_limit*Y_limit]={0,}; // 0~X_limit-1 * 0~Y_limit-1
+    bool tmp_i_cell[X_limit*Y_limit]={0,};
+    printf("hi\n");
+
     memset(alive_map,0,X_limit*Y_limit*sizeof(char));
     memset(i_cell,0,X_limit*Y_limit*sizeof(bool));
     memset(tmp_i_cell,0,X_limit*Y_limit*sizeof(bool));
+    printf("hi\n");
 //    printf("rank(%d) - %s %d %d %d\n",rank,argv[1],num_Gen,X_limit,Y_limit);
 ///  get input
     //FILE* f = fopen(filename,"r");
@@ -45,7 +47,7 @@ int main(int argc, char *argv[]){
     int row,col;
     while (fscanf(f,"%d %d\n",&row,&col) != EOF) {
         //printf("%d %d\n",row,col);
-        i_cell[row*Y_limit+col] =ALIVE;
+        i_cell[row*X_limit+col] =ALIVE;
     }
     fclose(f);
     
@@ -70,19 +72,19 @@ int main(int argc, char *argv[]){
     //for num of Gen
     
     for(int g=0; g<num_Gen; g++){
-        for(int i=0; i<X_limit; i++){
-	        for(int j=0; j<Y_limit; j++){ // i,j
+        for(int i=0; i<Y_limit; i++){
+	        for(int j=0; j<X_limit; j++){ // i,j
                 // get pos and cal alive or dead neigherhood
-                int index = i*Y_limit+j;
+                int index = i*X_limit+j;
                 if((index)%size == rank){
                     alive_map[index] = get_num_alive(i_cell,i,j);
                     // local_alive_map
                 }
             }
         }
-        for(int i=0; i<X_limit; i++){
-            for(int j=0; j<Y_limit; j++){
-                int index = i*Y_limit+j;
+        for(int i=0; i<Y_limit; i++){
+            for(int j=0; j<X_limit; j++){
+                int index = i*X_limit+j;
                 if(index%size == rank){ // MPI Divde
                     if((i_cell[index]==ALIVE) && alive_map[index] ==2){
                         tmp_i_cell[index] = ALIVE;
@@ -95,12 +97,12 @@ int main(int argc, char *argv[]){
             }
         }
         if (g != num_Gen-1){
-            MPI_Allreduce(tmp_i_cell,i_cell,X_limit*Y_limit,MPI_C_BOOL,MPI_LOR,MPI_COMM_WORLD);
+            MPI_Allreduce((void*)&tmp_i_cell,(void*)&i_cell,X_limit*Y_limit,MPI_C_BOOL,MPI_LOR,MPI_COMM_WORLD);
         } else {
             // print cell location
-            for(int i=0; i<X_limit; i++){
-                for(int j=0; j<Y_limit; j++){
-                    if(tmp_i_cell[i*Y_limit+j] == ALIVE){
+            for(int i=0; i<Y_limit; i++){
+                for(int j=0; j<X_limit; j++){
+                    if(tmp_i_cell[i*X_limit+j] == ALIVE){
                         printf("%d %d\n",i,j);
                     }
                 }
@@ -108,9 +110,9 @@ int main(int argc, char *argv[]){
         }
 /*        
         if(rank == 0){
-            for(int i=0; i<X_limit; i++){
-                for(int j=0; j<Y_limit; j++){
-                    if(i_cell[i*Y_limit+j] == DEAD){
+            for(int i=0; i<Y_limit; i++){
+                for(int j=0; j<X_limit; j++){
+                    if(i_cell[i*X_limit+j] == DEAD){
                         printf(".");
                     }else printf("#");
                 }
@@ -148,7 +150,7 @@ char get_num_alive(bool* i_cell,int x_pos,int y_pos){
             if(idx_x == x_pos && idx_y == y_pos) continue;
             if(idx_x <0 || idx_x >=X_limit) continue;
             if(idx_y <0 || idx_y >=Y_limit) continue;
-            if(i_cell[idx_x*Y_limit+idx_y]==ALIVE){ // alive
+            if(i_cell[idx_x*X_limit+idx_y]==ALIVE){ // alive
                 count +=1;
             }
         }

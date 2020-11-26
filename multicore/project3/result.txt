@@ -19,3 +19,45 @@ Elapsed time    : 10.391 seconds
 
 Elapsed time    : 75.136 seconds
 
+20201126_09:09:07
+run :
+	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/life.data.1 30 70 70 > output1.txt
+	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/life.data.2 30 100 100 > output2.txt
+	mpiexec --machinefile hosts.txt -n 16 ./mpi_main ./input_file/life.data.1 3000 512 512 > output3.txt
+	mpiexec --machinefile hosts.txt -n 16 ./mpi_main ./input_file/life.data.2 3000 1024 2014 > output4.txt
+	mpiexec --machinefile hosts.txt -n 16 -map-by node ./mpi_main ./input_file/life.data.1 3000 512 512 > output5.txt
+	mpiexec --machinefile hosts.txt -n 16 -map-by node ./mpi_main ./input_file/life.data.2 3000 1024 2014 > output6.txt
+single:
+Elapsed time    : 0.021 seconds
+
+Elapsed time    : 0.017 seconds
+
+Elapsed time    : 10.799 seconds
+
+Elapsed time    : 80.358 seconds
+
+Elapsed time    : 10.474 seconds
+
+Elapsed time    : 74.293 seconds
+
+20201126_10:25:18
+run :
+	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/life.data.1 30 70 70 > output1.txt
+	mpiexec --machinefile hosts.txt -n 2 ./mpi_main ./input_file/life.data.2 30 100 100 > output2.txt
+	mpiexec --machinefile hosts.txt -n 16 ./mpi_main ./input_file/life.data.1 30000 512 512 > output3.txt
+	mpiexec --machinefile hosts.txt -n 16 ./mpi_main ./input_file/life.data.2 30000 1024 2014 > output4.txt
+	mpiexec --machinefile hosts.txt -n 16 -map-by node ./mpi_main ./input_file/life.data.1 30000 512 512 > output5.txt
+	mpiexec --machinefile hosts.txt -n 16 -map-by node ./mpi_main ./input_file/life.data.2 30000 1024 2014 > output6.txt
+single:
+Elapsed time    : 0.008 seconds
+
+Elapsed time    : 0.017 seconds
+
+Elapsed time    : 105.780 seconds
+
+Elapsed time    : 822.798 seconds
+
+Elapsed time    : 101.021 seconds
+
+Elapsed time    : 737.837 seconds
+

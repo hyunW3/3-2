@@ -4,11 +4,12 @@
 #include <mpi.h>
 #include <unistd.h>
 #include <string.h>
-#define ALIVE true
-#define DEAD false
+#define ALIVE 1
+#define DEAD 0
 
 int X_limit,Y_limit;
-char get_num_alive(bool* i_cell,int x_pos,int y_pos);
+char get_num_alive(int x_pos,int y_pos);
+char** i_cell;
 int main(int argc, char *argv[]){
     int size,rank,num_Gen;
     double local_start,local_finish,local_elapsed,elapsed;
@@ -29,13 +30,22 @@ int main(int argc, char *argv[]){
     //char alive_map[X_limit*Y_limit]={0,};
     //bool i_cell[X_limit*Y_limit]={0,}; // 0~X_limit-1 * 0~Y_limit-1
     //bool tmp_i_cell[X_limit*Y_limit]={0,};
-
+/*
     char* alive_map = new char[X_limit*Y_limit];
     bool* i_cell = new bool[X_limit*Y_limit];
     bool* tmp_i_cell = new bool[X_limit*Y_limit];
-    memset(alive_map,0,X_limit*Y_limit*sizeof(char));
-    memset(i_cell,0,X_limit*Y_limit*sizeof(bool));
-    memset(tmp_i_cell,0,X_limit*Y_limit*sizeof(bool));
+*/
+    char** alive_map = new char*[X_limit];
+    i_cell = new char*[X_limit];
+    char** tmp_i_cell = new char*[X_limit];
+    for(int i=0; i<X_limit; i++){
+        alive_map[i] = new char[Y_limit];
+        memset(alive_map[i],0,Y_limit*sizeof(char));
+        i_cell[i] = new char[Y_limit];
+        memset(i_cell[i],0,Y_limit*sizeof(char));
+        tmp_i_cell[i] = new char[Y_limit];
+        memset(tmp_i_cell[i],0,Y_limit*sizeof(char));
+    }
 //    printf("rank(%d) - %s %d %d %d\n",rank,argv[1],num_Gen,X_limit,Y_limit);
 ///  get input
     //FILE* f = fopen(filename,"r");
@@ -45,16 +55,17 @@ int main(int argc, char *argv[]){
     int row,col;
     while (fscanf(f,"%d %d\n",&row,&col) != EOF) {
         //printf("%d %d\n",row,col);
-        i_cell[row*Y_limit+col] =ALIVE;
+        i_cell[row][col] = ALIVE;
+        //if(i_cell[row][col] == ALIVE) printf("%d %d - %d\n",row,col,i_cell[row][col]);
     }
     fclose(f);
     
 /// for test whether input get well
 /*
     if (rank == 0){ // for test whether input get well
-        for(int i=0; i<Y_limit; i++){
-	        for(int j=0; j<X_limit; j++){ // i,j
-                if(i_cell[i*X_limit+j] == DEAD){
+        for(int i=0; i<X_limit; i++){
+	        for(int j=0; j<Y_limit; j++){ // i,j
+                if(i_cell[i][j] == DEAD){
                     printf(".");
                 }else printf("#");
                 //printf("%d",i_cell[i*X_limit+j]); // for test whether input get well
@@ -75,7 +86,8 @@ int main(int argc, char *argv[]){
                 // get pos and cal alive or dead neigherhood
                 int index = i*Y_limit+j;
                 if((index)%size == rank){
-                    alive_map[index] = get_num_alive(i_cell,i,j);
+                    alive_map[i][j] = get_num_alive(i,j);
+                    //if(alive_map[i][j] != 0 ) printf("%d %d %d",i,j,alive_map[i][j]);
                     // local_alive_map
                 }
             }
@@ -84,23 +96,26 @@ int main(int argc, char *argv[]){
             for(int j=0; j<Y_limit; j++){
                 int index = i*Y_limit+j;
                 if(index%size == rank){ // MPI Divde
-                    if((i_cell[index]==ALIVE) && alive_map[index] ==2){
-                        tmp_i_cell[index] = ALIVE;
-                    } else if(alive_map[index] ==3){
-                        tmp_i_cell[index] = ALIVE;
+                    if((i_cell[i][j] ==ALIVE) && alive_map[i][j]  ==2){
+                        tmp_i_cell[i][j] = ALIVE;
+                    } else if(alive_map[i][j] ==3){
+                        tmp_i_cell[i][j]  = ALIVE;
                     } else {    
-                        tmp_i_cell[index] = DEAD;
+                        tmp_i_cell[i][j]  = DEAD;
                     }
                 } // end if((index)%size == rank)
             }
         }
         if (g != num_Gen-1){
-            MPI_Allreduce(tmp_i_cell,i_cell,X_limit*Y_limit,MPI_C_BOOL,MPI_LOR,MPI_COMM_WORLD);
+            for(int i=0; i<X_limit; i++){
+                MPI_Allreduce(tmp_i_cell[i],i_cell[i],Y_limit,MPI_CHAR,MPI_SUM,MPI_COMM_WORLD);
+                //MPI_Allreduce(&tmp_i_cell,&i_cell,X_limit*Y_limit,MPI_CHAR,MPI_MAX,MPI_COMM_WORLD);
+            }
         } else {
             // print cell location
             for(int i=0; i<X_limit; i++){
                 for(int j=0; j<Y_limit; j++){
-                    if(tmp_i_cell[i*Y_limit+j] == ALIVE){
+                    if(tmp_i_cell[i][j]  == ALIVE){
                         printf("%d %d\n",i,j);
                     }
                 }
@@ -136,7 +151,7 @@ int main(int argc, char *argv[]){
 }
 
 __inline 
-char get_num_alive(bool* i_cell,int x_pos,int y_pos){
+char get_num_alive(int x_pos,int y_pos){
     int dx[3] = {-1,0,1};
     int dy[3] = {-1,0,1};
     char count =0;
@@ -148,7 +163,7 @@ char get_num_alive(bool* i_cell,int x_pos,int y_pos){
             if(idx_x == x_pos && idx_y == y_pos) continue;
             if(idx_x <0 || idx_x >=X_limit) continue;
             if(idx_y <0 || idx_y >=Y_limit) continue;
-            if(i_cell[idx_x*Y_limit+idx_y]==ALIVE){ // alive
+            if(i_cell[idx_x][idx_y] == ALIVE){ // alive
                 count +=1;
             }
         }

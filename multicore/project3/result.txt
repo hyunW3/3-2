@@ -61,3 +61,45 @@ Elapsed time    : 101.021 seconds
 
 Elapsed time    : 737.837 seconds
 
+20201126_13:55:16
+run :
+	mpiexec --machinefile hosts.txt -np 16 ./mpi_main ./input_file/life.data.1 30 100 100 > output1.txt
+	mpiexec --machinefile hosts.txt -np 16 ./mpi_main ./input_file/life.data.2 30 100 100 > output2.txt
+	mpiexec --machinefile hosts.txt -np 64 ./mpi_main ./input_file/life.data.1 3000 2048 2048 > output3.txt
+	mpiexec --machinefile hosts.txt -np 128 ./mpi_main ./input_file/life.data.2 3000 102400 204800 > output4.txt
+	mpiexec --machinefile hosts.txt -np 64 -map-by node ./mpi_main ./input_file/life.data.1 3000 2048 2048 > output5.txt
+	mpiexec --machinefile hosts.txt -np 128 -map-by node ./mpi_main ./input_file/life.data.2 3000 102400 204800 > output6.txt
+single:
+Elapsed time    : 0.029 seconds
+
+Elapsed time    : 0.027 seconds
+
+Elapsed time    : 454.278 seconds
+
+--------------------------------------------------------------------------
+2 total processes killed (some possibly by mpiexec during cleanup)
+56 51
+57 51
+74 18
+93 24
+20201126_15:15:53
+run :
+	mpiexec --machinefile hosts.txt -np 16 ./mpi_main ./input_file/life.data.1 30 100 100 > output1.txt
+	mpiexec --machinefile hosts.txt -np 16 ./mpi_main ./input_file/life.data.2 30 100 100 > output2.txt
+	mpiexec --machinefile hosts.txt -np 64 ./mpi_main ./input_file/life.data.1 300 2048 2048 > output3.txt
+	mpiexec --machinefile hosts.txt -np 128 ./mpi_main ./input_file/life.data.2 300 10240 20480 > output4.txt
+	mpiexec --machinefile hosts.txt -np 64 -map-by node ./mpi_main ./input_file/life.data.1 300 2048 2048 > output5.txt
+	mpiexec --machinefile hosts.txt -np 128 -map-by node ./mpi_main ./input_file/life.data.2 300 10240 20480 > output6.txt
+single:
+Elapsed time    : 0.085 seconds
+
+Elapsed time    : 0.178 seconds
+
+Elapsed time    : 85.150 seconds
+
+Elapsed time    : 6724.658 seconds
+
+Elapsed time    : 34.959 seconds
+
+option to your binding directive.
+--------------------------------------------------------------------------

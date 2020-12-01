@@ -1,0 +1,5 @@
+nvprof ./a.out
+nvidia-smi
+watch -n 1 nvidia-smi
+nvcc # compile command
+nvprof --print-gpu-trace ./a.out

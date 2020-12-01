@@ -1,0 +1,6 @@
+	mpiexec --machinefile hosts.txt -np 30 ./mpi_main ./input_file/life.data.1 30 90 90 > output1.txt
+	mpiexec --machinefile hosts.txt -np 30 ./mpi_main ./input_file/life.data.2 30 90 90 > output2.txt
+	mpiexec --machinefile hosts.txt -np 60 ./mpi_main ./input_file/life.data.1 300 1200 1200 > output3.txt
+	mpiexec --machinefile hosts.txt -np 120 ./mpi_main ./input_file/life.data.2 300 12000 12000 > output4.txt
+	mpiexec --machinefile hosts.txt -np 60 -map-by node ./mpi_main ./input_file/life.data.1 300 1200 1200 > output5.txt
+	mpiexec --machinefile hosts.txt -np 120 -map-by node ./mpi_main ./input_file/life.data.2 300 12000 12000> output6.txt

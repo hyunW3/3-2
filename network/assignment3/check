@@ -1,0 +1,6 @@
+timer, 
+throughput, avgRTT 계산은?
+
+가끔식 안됨
+-> thread_lock으로?
+3 duplicated ack - ok

@@ -1,0 +1,42 @@
+what server do
+1. recv new client & register  	ok
+2. broadcast new client 		ok
+3. relay the client @chat		ok
+4. request client table			
+5. recv degistered request		ok
+	with threading.Timer, check it is alive
+6. recv 'keep alive'			ok 
+	if not, delete client data with disappeared info
+
+what client recv
+0. ack of the end of client end 		ok
+1. recv response with 1(register ID)	ok
+2. recv broadcasted data 				ok
+3. relayed chat data 					ok
+4. recv broadcasted data of deregister 	ok
+
+
+
+message format 
+addr = IP:Port
+address (IP,Port) [type: tuple]
+
+from client
+#num_instr + clientID + \n\r + data
+from server
+#num_instr + serverID + \n\r + data
+========discard
+#num_instr + other_ID + \n\r + data
+#address + | +
+
+data ?
+1. recv new client & register 
+	-> clientPort + | + clientID
+	send client table: ID|address + \n + ID1|address1 + \n 
+	broadcast action : ID|address
+2. recv 'keep alive' 
+3. relay the client @chat
+	-> target_ID + | + chat_data
+	when receiving :
+	-> from_ID + | + chat_data
+4. request client table

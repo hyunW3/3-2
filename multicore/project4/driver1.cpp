@@ -4,8 +4,8 @@
 
 //#define N 1000000
 //#define MAX_VAL 1000000
-#define N 16
-#define MAX_VAL 10
+#define N 24
+#define MAX_VAL 24
 
 extern void counting_sort(int arr[], int, int);
 
@@ -20,12 +20,14 @@ int main()
   printf("\n");
 
   counting_sort(array, N, MAX_VAL);
+
   printf("sorted array\n");
   for(int i=0; i<N; i++){
       printf("%02d ",array[i]);
   }
   printf("\n");
-/*
+
+
   for(int i=0;i<N-1;i++){
       if( array[i] > array[i+1]){
           printf("Not sorted\n");
@@ -33,5 +35,5 @@ int main()
       }
   }
   printf("Sorted\n");
-  */
+  
 }

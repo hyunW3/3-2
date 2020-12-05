@@ -42,14 +42,7 @@ __global__ void cuda_sort(int* arr_d,int* histogram_d, int size, int max_val){
       }
       off *=2;
    }
-   __syncthreads();
-   for(int j=off-1; j<size-1; j++){
-      if(i == j){
-         position[j+1] += position[j];
-      } 
-      __syncthreads();
-   }
-   if(i==0) position[off-1] = 0;
+   if(i==0) position[size-1] = 0;
    for(int stride= 1; stride<size; stride *=2){
       off = off>>1;
       __syncthreads();
@@ -59,12 +52,13 @@ __global__ void cuda_sort(int* arr_d,int* histogram_d, int size, int max_val){
          int tmp = position[a];
          position[a] = position[b];
          position[b] += tmp;
+
       }
    }
    __syncthreads();
    if(i<size){
       //arr_d[i] = histogram_d[i];
-      //arr_d[i] = position[i];
+      arr_d[i] = position[i];
       
    }
    // device code

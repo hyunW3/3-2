@@ -62,10 +62,15 @@ __global__ void cuda_sort(int* arr_d,int* histogram_d, int size, int max_val){
       }
    }
    __syncthreads();
+   
    if(i<size){
       //arr_d[i] = histogram_d[i];
       //arr_d[i] = position[i];
-      
+      for(int j=0; j<max_val; j++){
+         for(int k=0; k<histogram_d[j]; k++){
+            arr_d[position[j]+k] = j;
+         }
+      }
    }
    // device code
 }

@@ -1,0 +1,13 @@
+
+
+#define N 10000000
+#define MAX_VAL 10000000
+time(us): 264413
+
+#define N 100000000
+#define MAX_VAL 100000000
+time(us): 383927
+
+#define N 1000000000
+#define MAX_VAL 1000000000
+time(us): 1854228

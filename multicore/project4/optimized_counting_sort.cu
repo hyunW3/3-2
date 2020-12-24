@@ -52,12 +52,9 @@ __global__ void cuda_sort(int* arr_d,int* out, int* histogram_d, int size, int m
    }
    __syncthreads();
    if(i<max_val){ 
-
-   for(int j=0; j<histogram_d[i]; j++){
-      out[position[i]+j] = i;
-   }
-
-   //   memset(&arr_d[position[i]],i,sizeof(int)*histogram_d[i]);
+      for(int j=0; j<histogram_d[i]; j++){
+         out[position[i]+j] = i;
+      }
    }
    // device code
 }

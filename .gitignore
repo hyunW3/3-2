@@ -1,5 +1,6 @@
 .exe
-multicore/project2/input/example_*.txt
+example_*.txt
 multicore/project2/output/output_single_example_*.txt
 multicore/project2/output/output_example_*.txt
 ryu-nat/
+mininet/

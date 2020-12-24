@@ -5,11 +5,11 @@
 #include <cstring>
 #include <cstdint>
 #include <ctime>
-//#define N 1000000
-//#define MAX_VAL 1000000
+#define N 7000000
+#define MAX_VAL 10000000
 // error in 1000000000
-#define N 1000000000
-#define MAX_VAL 1000000000
+//#define N 1000000000
+//#define MAX_VAL 1000000000
 
 extern void counting_sort(int arr[], int, int);
 

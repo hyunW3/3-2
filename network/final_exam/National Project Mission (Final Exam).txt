@@ -1,0 +1,22 @@
+National Project Mission (Final Exam)
+
+ 
+You are the Minister of Science and Technology in Greatest Kingdom (a virtual country). Your  President wants to start a new national project called “Smart X” including Smart City, Smart Factory, Smart Healthcare, Smart Military and so on.
+
+Assume that the fourth generation (4G) mobile communication, LTE, has been widely deployed in Greatest Kingdom, but 5G (fifth generation) mobile communication has NOT been deployed at all.
+
+The President has asked you “what is 5G (fifth generation) mobile communication?”, and “is really 5G needed for the national project, Smart X?”.
+
+ 
+Your mission is to thoroughly investigate 5G, and let the president understand what 5G is. You should reasonably suggest whether 5G is required to achieve the Smart X project or not. To do this, write a report (PDF) within 5 pages in either Korean or English.
+
+The report MUST include the following;
+
+1. Describe what 5G is, how 5G is different from 4G/LTE.
+2. Present how 5G can be applied to the national project, Smart X by using the specific examples.
+3. What should be considered when deploying 5G for the Smart X project?
+4. Conclude with your final opinion on national investment in upgrading 5G.
+* Use good diagrams, images, graphs to persuade the President effectively.
+
+ 
+Any information you refer in the report, you MUST explicitly indicate the source of the information.

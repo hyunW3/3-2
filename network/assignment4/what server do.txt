@@ -23,20 +23,22 @@ address (IP,Port) [type: tuple]
 
 from client
 #num_instr + clientID + \n\r + data
+-> #num_instr + clientID + |  + \n\r + data
 from server
 #num_instr + serverID + \n\r + data
-========discard
-#num_instr + other_ID + \n\r + data
-#address + | +
+
 
 data ?
-1. recv new client & register 
-	-> clientPort + | + clientID
-	send client table: ID|address + \n + ID1|address1 + \n 
-	broadcast action : ID|address
+1. recv new client & register
+	from client : 
+		private_ip
+	send client table: ID|address|private_ip + \n + ID1|address1 + \n 
+	broadcast action : ID|address|private_ip
 2. recv 'keep alive' 
 3. relay the client @chat
 	-> target_ID + | + chat_data
 	when receiving :
 	-> from_ID + | + chat_data
 4. request client table
+
+같은 이름으로 다시 로그인했을 때 timer reset

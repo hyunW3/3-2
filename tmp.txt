@@ -1,0 +1,22 @@
+1억 ->2000만usec(20초 )
+10억 -> 5분 270초 
+
+
+libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb7d0f000)
+
+strings -tx /lib/i386-linux-gnu/libc.so.6 | grep "/bin/sh"
+ 15bb0b /bin/sh
+
+gdb-peda$ p execve
+$1 = {<text variable, no debug info>} 0xb08c0 <execve>
+gdb-peda$ p system
+$1 = {<text variable, no debug info>} 0x3adb0 <__libc_system>
+ 0xb7dc7db0
+ 0xb7dc3db0 
+
+
+	/bin/sh 주소  execve		
+ p/x 0x15bb0b - 0xb08c0
+
+
+$3 = 0xab24b offset

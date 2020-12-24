@@ -1,0 +1,45 @@
+d8:00.0 VGA compatible controller: NVIDIA Corporation GV100 [TITAN V] (rev a1)
+CUDA:TensorCore	:TMU:ROP
+5120:640		:320:96
+cuda_sort<<<1,size,size*sizeof(int)>>>(arr_d,out, histogram_d, size, max_val);
+time(us): 268834
+time(us): 290090
+time(us): 282691
+time(us): 267488
+time(us): 236659
+time(us): 234090
+time(us): 231859
+
+cuda_sort<<<ceil(size/1024),1024,size*sizeof(int)>>>(arr_d,out, histogram_d, size, max_val);
+time(us): 267479
+time(us): 251746
+time(us): 275705
+time(us): 253250
+time(us): 268010
+time(us): 241293
+time(us): 254691
+
+
+
+
+
+#define N 1000
+#define MAX_VAL 1000
+cuda_sort<<<1,size,size*sizeof(int)>>>(arr_d,out, histogram_d, size, max_val);
+time(us): 232752
+time(us): 250807
+time(us): 227881
+time(us): 222933
+time(us): 236635
+
+cuda_sort<<<ceil(size/1024),1024,size*sizeof(int)>>>(arr_d,out, histogram_d, size, max_val);
+time(us): 206851
+time(us): 231532
+time(us): 212817
+time(us): 226765
+time(us): 227270
+
+#define N 1000000000
+#define MAX_VAL 1000000000
+Sorted
+time(us): 3682566
